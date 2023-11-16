@@ -26,7 +26,7 @@ class ProductsSeeder extends Seeder
                 Product::create([
                     'name' => $productName,
                     'description' => "Description for $productName",
-                    'price' => rand(10, 100),
+                    'price' => rand(10000, 100000),
                     'category_id' => $categoryId,
                     'image' => "/image/$imageName",
                 ]);
