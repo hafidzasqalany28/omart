@@ -120,9 +120,30 @@
                         </div>
                         <a href="/contact'" class="nav-item nav-link">Contact</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
+                    <div class="navbar-nav ml-auto">
+                        @if(Auth::check())
+                        <div class="dropdown">
+                            <button class="btn border" type="button" id="userDropdown" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                {{ Auth::user()->name }}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                        @else
                         <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
                         <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
+                        @endif
                     </div>
                 </div>
             </nav>
@@ -186,9 +207,30 @@
                                     </div>
                                     <a href="/contact" class="nav-item nav-link">Contact</a>
                                 </div>
-                                <div class="navbar-nav ml-auto py-0">
-                                    <a href="" class="nav-item nav-link">Login</a>
-                                    <a href="" class="nav-item nav-link">Register</a>
+                                <div class="navbar-nav ml-auto">
+                                    @if(Auth::check())
+                                    <div class="dropdown">
+                                        <button class="btn border" type="button" id="userDropdown"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{ Auth::user()->name }}
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="#">Profile</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                            </form>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
+                                    <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
+                                    @endif
                                 </div>
                             </div>
                         </nav>
