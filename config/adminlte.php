@@ -301,37 +301,41 @@ return [
             'icon' => 'fas fa-fw fa-box',
         ],
         [
-            'text' => 'Manage Promotions',
-            'url'  => 'admin/promotions',
-            'icon' => 'fas fa-tags',
-        ],
-        [
-            'text' => 'Stock Availability',
-            'url' => 'admin/stock',
-            'icon' => 'fas fa-cubes',
-        ],
-        [
-            'text' => 'Sold Products',
-            'url' => 'admin/sold-products',
-            'icon' => 'fas fa-shopping-cart',
-        ],
-        [
             'text' => 'Manage Orders',
             'url' => 'admin/orders',
             'icon' => 'fas fa-shopping-bag',
         ],
         [
-            'text' => 'Sales Report',
-            'url' => 'admin/sales-report',
-            'icon' => 'fas fa-chart-bar',
+            'text' => 'Manage Promotions',
+            'url'  => 'admin/promotions',
+            'icon' => 'fas fa-tags',
+        ],
+        [
+            'text' => 'Manage Category',
+            'url' => 'admin/categories',
+            'icon' => 'fas fa-fw fa-sitemap',
+        ],
+        [
+            'text' => 'Manage Payments',
+            'url' => 'admin/payments',
+            'icon' => 'fas fa-credit-card',
         ],
         [
             'text' => 'Manage Reviews',
             'url' => 'admin/reviews',
             'icon' => 'fas fa-comments',
         ],
+        [
+            'text' => 'Manage Users',
+            'url' => 'admin/users',
+            'icon' => 'fas fa-fw fa-users',
+        ],
+        [
+            'text' => 'Manage Role',
+            'url' => 'admin/roles',
+            'icon' => 'fas fa-fw fa-users-cog',
+        ],
     ],
-
 
     /*
     |--------------------------------------------------------------------------
