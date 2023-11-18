@@ -18,8 +18,15 @@ class UsersSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Customer User',
-            'email' => 'customer@example.com',
+            'name' => 'Customer User 1',
+            'email' => 'customer1@example.com',
+            'password' => bcrypt('12345678'),
+            'role_id' => 2, // Customer role
+        ]);
+
+        User::create([
+            'name' => 'Customer User 2',
+            'email' => 'customer2@example.com',
             'password' => bcrypt('12345678'),
             'role_id' => 2, // Customer role
         ]);

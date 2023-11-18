@@ -37,11 +37,6 @@ class Product extends Model
         return $this->hasMany(Promo::class);
     }
 
-    public function productPromos()
-    {
-        return $this->hasMany(Promo::class);
-    }
-
     public function payments()
     {
         return $this->hasManyThrough(Payment::class, Order::class);

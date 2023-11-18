@@ -14,7 +14,7 @@ class ProductsSeeder extends Seeder
     {
         $categoryIds = [];
 
-        foreach (['Makanan', 'Minuman', 'Home & Living', 'Kesehatan & Kecantikan', 'Ibu & Anak'] as $category) {
+        foreach (['Makanan', 'Minuman', 'Kebutuhan Dapur', 'Rumah Tangga', 'Ibu & Anak'] as $category) {
             $categoryIds[$category] = Category::create(['name' => $category])->id;
         }
 
