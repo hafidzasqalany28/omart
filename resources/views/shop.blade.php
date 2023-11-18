@@ -58,13 +58,15 @@
                 <!-- Search and Sort Options -->
                 <div class="col-12 mb-4">
                     <div class="d-flex align-items-center justify-content-between">
-                        <form action="">
+                        <form action="{{ route('shop.filter') }}" method="GET" class="w-50">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
+                                <input type="text" class="form-control" name="search" placeholder="Search by name"
+                                    value="{{ request('search') }}">
                                 <div class="input-group-append">
-                                    <span class="input-group-text bg-transparent text-primary">
+                                    <button type="submit" class="input-group-text bg-transparent text-primary"
+                                        id="search-btn">
                                         <i class="fa fa-search"></i>
-                                    </span>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -82,6 +84,7 @@
                     </div>
                 </div>
                 <!-- End of Search and Sort Options -->
+
                 <!-- Loop through products and display dynamically -->
                 @foreach($products as $product)
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-4">

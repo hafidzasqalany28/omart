@@ -41,6 +41,10 @@ class HomeController extends Controller
             $products->where('price', '<=', $request->input('max_price'));
         }
 
+        // Search by name
+        if ($request->filled('search')) {
+            $products->where('name', 'like', '%' . $request->input('search') . '%');
+        }
 
         $products = $products->get();
 
