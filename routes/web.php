@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PromoController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
@@ -39,10 +40,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::resource('categories', CategoryController::class, ['as' => 'admin'])->except(['show']);
         Route::resource('promos', PromoController::class, ['as' => 'admin']);
         Route::resource('users', UserController::class, ['as' => 'admin']);
+        Route::resource('reviews', ReviewController::class, ['as' => 'admin']);
 
         Route::resource('orders', OrderController::class, ['as' => 'admin']);
         Route::resource('payments', PaymentController::class, ['as' => 'admin']);
-        Route::resource('reviews', ReviewController::class, ['as' => 'admin']);
     });
 });
 
