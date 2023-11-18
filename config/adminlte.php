@@ -307,7 +307,7 @@ return [
         ],
         [
             'text' => 'Manage Promotions',
-            'url'  => 'admin/promotions',
+            'url'  => 'admin/promos',
             'icon' => 'fas fa-tags',
         ],
         [
