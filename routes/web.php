@@ -24,7 +24,7 @@ use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
-Route::get('/shop-detail', [HomeController::class, 'shopDetail'])->name('shop.detail');
+Route::get('/shop-detail/{id}', [HomeController::class, 'shopDetail'])->name('shop.detail');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/shop/filter', [HomeController::class, 'shop'])->name('shop.filter');
 

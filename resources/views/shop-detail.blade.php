@@ -13,103 +13,45 @@
 </div>
 <!-- Page Header End -->
 
-
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
-    <div class="row px-xl-5">
+    <div class="row px-xl-5 align-items-center">
+        <!-- Product Image and Information Column -->
         <div class="col-lg-5 pb-5">
-            <div id="product-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner border">
-                    <div class="carousel-item active">
-                        <img class="w-100 h-100" src="{{ asset('img/product-1.jpg') }}" alt="Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="w-100 h-100" src="{{ asset('img/product-2.jpg') }}" alt="Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="w-100 h-100" src="{{ asset('img/product-3.jpg') }}" alt="Image">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="w-100 h-100" src="{{ asset('img/product-4.jpg') }}" alt="Image">
-                    </div>
-                </div>
-                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                    <i class="fa fa-2x fa-angle-left text-dark"></i>
-                </a>
-                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                    <i class="fa fa-2x fa-angle-right text-dark"></i>
-                </a>
+            <div class="d-flex flex-column align-items-center">
+                @if($product->image)
+                <img class="w-75 h-auto mb-3" src="{{ asset('img/products/' . $product->image) }}" alt="Product Image">
+                @endif
+
+                <!-- Add your dynamic product sharing here -->
             </div>
         </div>
 
+        <!-- Product Information Column -->
         <div class="col-lg-7 pb-5">
-            <h3 class="font-weight-semi-bold">Colorful Stylish Shirt</h3>
-            <div class="d-flex mb-3">
+            <h3 class="font-weight-semi-bold mb-3">{{ $product->name }}</h3>
+
+            <!-- Rating Section -->
+            <div class="d-flex align-items-center mb-3">
                 <div class="text-primary mr-2">
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star-half-alt"></small>
-                    <small class="far fa-star"></small>
+                    @for($i = 0; $i < 5; $i++) @if($i < $product->rating)
+                        <small class="fas fa-star"></small>
+                        @else
+                        <small class="far fa-star"></small>
+                        @endif
+                        @endfor
                 </div>
-                <small class="pt-1">(50 Reviews)</small>
+                <small class="pt-1">({{ $product->reviews_count }} Reviews)</small>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">$150.00</h3>
-            <p class="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit clita
-                ea. Sanc invidunt ipsum et, labore clita lorem magna lorem ut. Erat lorem duo dolor no sea nonumy.
-                Accus labore stet, est lorem sit diam sea et justo, amet at lorem et eirmod ipsum diam et rebum kasd
-                rebum.</p>
-            <div class="d-flex mb-3">
-                <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
-                <form>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-1" name="size">
-                        <label class="custom-control-label" for="size-1">XS</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-2" name="size">
-                        <label class="custom-control-label" for="size-2">S</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-3" name="size">
-                        <label class="custom-control-label" for="size-3">M</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-4" name="size">
-                        <label class="custom-control-label" for="size-4">L</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-5" name="size">
-                        <label class="custom-control-label" for="size-5">XL</label>
-                    </div>
-                </form>
-            </div>
-            <div class="d-flex mb-4">
-                <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
-                <form>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="color-1" name="color">
-                        <label class="custom-control-label" for="color-1">Black</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="color-2" name="color">
-                        <label class="custom-control-label" for="color-2">White</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="color-3" name="color">
-                        <label class="custom-control-label" for="color-3">Red</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="color-4" name="color">
-                        <label class="custom-control-label" for="color-4">Blue</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="color-5" name="color">
-                        <label class="custom-control-label" for="color-5">Green</label>
-                    </div>
-                </form>
-            </div>
-            <div class="d-flex align-items-center mb-4 pt-2">
+
+            <!-- Price -->
+            <h3 class="font-weight-semi-bold mb-4">${{ number_format($product->price, 2) }}</h3>
+
+            <!-- Description -->
+            <p class="mb-4">{{ $product->description }}</p>
+
+            <!-- Quantity and Add to Cart -->
+            <div class="d-flex align-items-center">
                 <div class="input-group quantity mr-3" style="width: 130px;">
                     <div class="input-group-btn">
                         <button class="btn btn-primary btn-minus">
@@ -125,25 +67,12 @@
                 </div>
                 <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
             </div>
-            <div class="d-flex pt-2">
-                <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
-                <div class="d-inline-flex">
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-dark px-2" href="">
-                        <i class="fab fa-pinterest"></i>
-                    </a>
-                </div>
-            </div>
+
+            <!-- Add your dynamic product sharing here -->
+
         </div>
     </div>
+
     <div class="row px-xl-5">
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
@@ -154,27 +83,27 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
                     <h4 class="mb-3">Product Description</h4>
-                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam
-                        invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
-                        consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam.
-                        Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos
-                        dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod
-                        nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt
-                        tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
+                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt
+                        duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
+                        invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet
+                        rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam
+                        consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam,
+                        ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
+                        sanctus eirmod takimata dolor ea invidunt.</p>
                     <p>Dolore magna est eirmod sanctus dolor, amet diam et eirmod et ipsum. Amet dolore tempor
-                        consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita
-                        clita diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum.
-                        Ea erat sed et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
+                        consetetur sed lorem dolor sit lorem tempor. Gubergren amet amet labore sadipscing clita clita
+                        diam clita. Sea amet et sed ipsum lorem elitr et, amet et labore voluptua sit rebum. Ea erat sed
+                        et diam takimata sed justo. Magna takimata justo et amet magna et.</p>
                 </div>
                 <div class="tab-pane fade" id="tab-pane-2">
                     <h4 class="mb-3">Additional Information</h4>
-                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam
-                        invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod
-                        consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam.
-                        Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos
-                        dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod
-                        nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt
-                        tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
+                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt
+                        duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
+                        invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet
+                        rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam
+                        consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam,
+                        ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
+                        sanctus eirmod takimata dolor ea invidunt.</p>
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-group list-group-flush">
@@ -215,8 +144,7 @@
                         <div class="col-md-6">
                             <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
                             <div class="media mb-4">
-                                <img src="{{ asset('img/user.jpg') }}" alt="Image" class="img-fluid mr-3 mt-1"
-                                    style="width: 45px;">
+                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
                                     <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
                                     <div class="text-primary mb-2">
@@ -226,8 +154,8 @@
                                         <i class="fas fa-star-half-alt"></i>
                                         <i class="far fa-star"></i>
                                     </div>
-                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
-                                        et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no
+                                        at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
                                 </div>
                             </div>
                         </div>
@@ -267,8 +195,13 @@
             </div>
         </div>
     </div>
+
 </div>
 <!-- Shop Detail End -->
+
+
+
+
 
 
 <!-- Products Start -->

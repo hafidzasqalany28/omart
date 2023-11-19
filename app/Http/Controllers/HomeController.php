@@ -51,11 +51,11 @@ class HomeController extends Controller
         return view('shop', compact('products', 'categories'));
     }
 
-
-
-    public function shopDetail()
+    public function shopDetail($id)
     {
-        return view('shop-detail');
+        $product = Product::findOrFail($id);
+
+        return view('shop-detail', compact('product'));
     }
 
     public function shoppingCart()
