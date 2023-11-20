@@ -54,9 +54,18 @@ class HomeController extends Controller
     public function shopDetail($id)
     {
         $product = Product::findOrFail($id);
+        $promo = $product->promotion;
+        $reviews = $product->reviews;
+        $reviewCount = $reviews->count();
 
-        return view('shop-detail', compact('product'));
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+        return view('shop-detail', compact('product', 'promo', 'reviews', 'reviewCount', 'relatedProducts'));
     }
+
 
     public function shoppingCart()
     {
