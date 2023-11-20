@@ -99,7 +99,7 @@
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="" class="text-decoration-none d-block d-lg-none">
+                <a href="{{ route('welcome') }}" class="text-decoration-none d-block d-lg-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
                             class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
@@ -108,17 +108,20 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/" class="nav-item nav-link active">Home</a>
-                        <a href="/shop" class="nav-item nav-link">Shop</a>
-                        <a href="/shop-detail" class="nav-item nav-link">Shop Detail</a>
+                        <a href="{{ route('welcome') }}"
+                            class="nav-item nav-link{{ request()->is('/') ? ' active' : '' }}">Home</a>
+                        <a href="{{ route('shop') }}"
+                            class="nav-item nav-link{{ request()->is('shop*') ? ' active' : '' }}">Shop</a>
+                        {{-- Menghapus Shop Detail dari navbar --}}
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="/shopping-cart" class="dropdown-item">Shopping Cart</a>
-                                <a href="/checkout" class="dropdown-item">Checkout</a>
+                                <a href="{{ route('shopping.cart') }}" class="dropdown-item">Shopping Cart</a>
+                                <a href="{{ route('checkout') }}" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
-                        <a href="/contact'" class="nav-item nav-link">Contact</a>
+                        <a href="{{ route('contact') }}"
+                            class="nav-item nav-link{{ request()->is('contact') ? ' active' : '' }}">Contact</a>
                     </div>
                     <div class="navbar-nav ml-auto">
                         @if(Auth::check())
@@ -185,7 +188,7 @@
                     </div>
                     <div class="col-lg-9">
                         <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                            <a href="" class="text-decoration-none d-block d-lg-none">
+                            <a href="{{ route('welcome') }}" class="text-decoration-none d-block d-lg-none">
                                 <h1 class="m-0 display-5 font-weight-semi-bold"><span
                                         class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                             </a>
@@ -195,17 +198,21 @@
                             </button>
                             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                                 <div class="navbar-nav mr-auto py-0">
-                                    <a href="/" class="nav-item nav-link">Home</a>
-                                    <a href="/shop" class="nav-item nav-link">Shop</a>
-                                    <a href="/shop-detail" class="nav-item nav-link active">Shop Detail</a>
+                                    <a href="{{ route('welcome') }}"
+                                        class="nav-item nav-link{{ request()->is('/') ? ' active' : '' }}">Home</a>
+                                    <a href="{{ route('shop') }}"
+                                        class="nav-item nav-link{{ request()->is('shop*') ? ' active' : '' }}">Shop</a>
+                                    {{-- Menghapus Shop Detail dari navbar --}}
                                     <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                         <div class="dropdown-menu rounded-0 m-0">
-                                            <a href="/shopping-cart" class="dropdown-item">Shopping Cart</a>
-                                            <a href="/checkout" class="dropdown-item">Checkout</a>
+                                            <a href="{{ route('shopping.cart') }}" class="dropdown-item">Shopping
+                                                Cart</a>
+                                            <a href="{{ route('checkout') }}" class="dropdown-item">Checkout</a>
                                         </div>
                                     </div>
-                                    <a href="/contact" class="nav-item nav-link">Contact</a>
+                                    <a href="{{ route('contact') }}"
+                                        class="nav-item nav-link{{ request()->is('contact') ? ' active' : '' }}">Contact</a>
                                 </div>
                                 <div class="navbar-nav ml-auto">
                                     @if(Auth::check())
@@ -234,6 +241,7 @@
                                 </div>
                             </div>
                         </nav>
+
                     </div>
                 </div>
             </div>
