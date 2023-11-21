@@ -18,67 +18,18 @@ class HomeController extends Controller
     //     return view('home');
     // }
 
-    public function welcome()
+    public function home()
     {
         return view('welcome');
-    }
-
-    public function shop(Request $request)
-    {
-        $categories = Category::all();
-        $products = Product::query();
-
-        // Filter by category
-        if ($request->has('categories')) {
-            $products->whereIn('category_id', $request->input('categories'));
-        }
-        // Filter by price range
-        if ($request->filled('min_price')) {
-            $products->where('price', '>=', $request->input('min_price'));
-        }
-
-        if ($request->filled('max_price')) {
-            $products->where('price', '<=', $request->input('max_price'));
-        }
-
-        // Search by name
-        if ($request->filled('search')) {
-            $products->where('name', 'like', '%' . $request->input('search') . '%');
-        }
-
-        $products = $products->get();
-
-        return view('shop', compact('products', 'categories'));
-    }
-
-    public function shopDetail($id)
-    {
-        $product = Product::findOrFail($id);
-        $promo = $product->promotion;
-        $reviews = $product->reviews;
-        $reviewCount = $reviews->count();
-
-        $relatedProducts = Product::where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->inRandomOrder()
-            ->limit(5)
-            ->get();
-        return view('shop-detail', compact('product', 'promo', 'reviews', 'reviewCount', 'relatedProducts'));
-    }
-
-
-    public function shoppingCart()
-    {
-        return view('shopping-cart');
-    }
-
-    public function checkout()
-    {
-        return view('checkout');
     }
 
     public function contact()
     {
         return view('contact');
+    }
+
+    public function reviews()
+    {
+        // Logika untuk halaman ulasan
     }
 }

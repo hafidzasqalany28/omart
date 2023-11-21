@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\ReviewController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 
 /*
@@ -22,16 +23,22 @@ use App\Http\Controllers\Admin\CategoryController;
 |
 */
 
-Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
-Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
-Route::get('/shop-detail/{id}', [HomeController::class, 'shopDetail'])->name('shop.detail');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::get('/shop/filter', [HomeController::class, 'shop'])->name('shop.filter');
+Route::get('/reviews', [HomeController::class, 'reviews'])->name('reviews');
+
+Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::get('/products/filter', [ProductController::class, 'index'])->name('products.filter');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.detail');
+
+
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::get('/order/history', [CartController::class, 'orderHistory'])->name('order.history');
 
 
 Route::middleware(['auth', 'customer'])->group(function () {
-    Route::get('/shopping-cart', [HomeController::class, 'shoppingCart'])->name('shopping.cart');
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
+    // Tambahkan rute-rute yang perlu dilindungi oleh middleware auth dan customer di sini.
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
