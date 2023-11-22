@@ -10,6 +10,12 @@ class CartController extends Controller
     public function showCart()
     {
         $cartItems = session('cart', []);
+
+        // Cek apakah keranjang belanja kosong
+        if (empty($cartItems)) {
+            return view('cart', ['cartItems' => $cartItems, 'subtotal' => 0, 'shipping' => 0, 'total' => 0]);
+        }
+
         $subtotal = $this->getCartSubtotal($cartItems);
         $shipping = 20000; // Ganti dengan biaya pengiriman yang sesuai
         $total = $subtotal + $shipping;
@@ -20,6 +26,10 @@ class CartController extends Controller
 
         return view('cart', compact('cartItems', 'subtotal', 'shipping', 'total'));
     }
+
+
+
+
 
     public function addToCart(Request $request, $id)
     {
@@ -48,7 +58,14 @@ class CartController extends Controller
         // Save the cart back to the session
         session(['cart' => $cart]);
 
-        return redirect()->route('cart')->with('success', 'Product added to cart successfully.');
+        // Check if the request has the 'quantity' input
+        if ($request->has('quantity')) {
+            // If 'quantity' exists, it's a request from the product details page
+            return back()->with('success', 'Product added to cart successfully.');
+        } else {
+            // If not, it's a request from the regular product page
+            return back()->with('success', 'Product added to cart successfully.');
+        }
     }
 
 

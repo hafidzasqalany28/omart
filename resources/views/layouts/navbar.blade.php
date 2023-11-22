@@ -62,7 +62,7 @@
                 </a>
                 <a href="{{ route('cart') }}" class="nav-item nav-link{{ request()->is('cart') ? ' active' : '' }}">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">{{ count(session('cart', [])) }}</span>
                 </a>
             </div>
         </div>

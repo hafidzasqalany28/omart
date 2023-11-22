@@ -122,6 +122,8 @@
                             </a>
                             <form action="{{ route('cart.add', ['id' => $product->id]) }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <!-- Include a hidden input for quantity -->
                                 <button type="submit" class="btn btn-sm btn-outline-dark">
                                     <i class="fas fa-shopping-cart text-primary mr-2"></i>Add To Cart
                                 </button>
