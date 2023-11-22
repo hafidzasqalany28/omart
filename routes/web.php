@@ -31,14 +31,10 @@ Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/filter', [ProductController::class, 'index'])->name('products.filter');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.detail');
 
-
-Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
-Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-Route::get('/order/history', [CartController::class, 'orderHistory'])->name('order.history');
-
-
 Route::middleware(['auth', 'customer'])->group(function () {
-    // Tambahkan rute-rute yang perlu dilindungi oleh middleware auth dan customer di sini.
+    Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::get('/order/history', [CartController::class, 'orderHistory'])->name('order.history');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

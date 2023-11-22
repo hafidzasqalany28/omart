@@ -218,8 +218,4 @@
     </div>
 </div>
 <!-- Products End -->
-
-
-
-
 @endsection

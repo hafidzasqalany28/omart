@@ -107,8 +107,9 @@
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="{{ route('home') }}" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">O</span>Mart</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold">
+                        <span class="text-primary font-weight-bold border px-3 mr-1">O</span>Mart
+                    </h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -116,15 +117,21 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="{{ route('home') }}"
-                            class="nav-item nav-link{{ request()->is('home') ? ' active' : '' }}">Beranda</a>
+                            class="nav-item nav-link{{ Route::currentRouteName() === 'home' ? ' active' : '' }}">
+                            Beranda
+                        </a>
                         <a href="{{ route('products') }}"
-                            class="nav-item nav-link{{ request()->is('products') ? ' active' : '' }}">Produk</a>
+                            class="nav-item nav-link{{ Route::currentRouteName() === 'products' ? ' active' : '' }}">
+                            Produk
+                        </a>
                         <a href="{{ route('contact') }}"
-                            class="nav-item nav-link{{ request()->is('contact') ? ' active' : '' }}">Bantuan</a>
+                            class="nav-item nav-link{{ Route::currentRouteName() === 'contact' ? ' active' : '' }}">
+                            Bantuan
+                        </a>
                     </div>
                     <div class="navbar-nav ml-auto">
-                        @if(Auth::check())
-                        <!-- Bagian User Dropdown jika sudah login -->
+                        @auth
+                        <!-- User Dropdown if logged in -->
                         <div class="dropdown mr-2">
                             <button class="btn border" type="button" id="userDropdown" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
@@ -146,7 +153,7 @@
                         @else
                         <a href="{{ route('login') }}" class="nav-item nav-link mr-2">Login</a>
                         <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
-                        @endif
+                        @endauth
                     </div>
                 </div>
             </nav>
