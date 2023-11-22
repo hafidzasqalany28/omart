@@ -37,7 +37,7 @@
         <div class="col-lg-3 d-none d-lg-block">
             <a href="#" class="text-decoration-none">
                 <h1 class="m-0 display-5 font-weight-semi-bold">
-                    <span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper
+                    <span class="text-primary font-weight-bold border px-3 mr-1">O</span>Mart
                 </h1>
             </a>
         </div>
@@ -55,11 +55,13 @@
         </div>
         <div class="col-lg-3 col-6 text-right">
             <div class="d-flex align-items-center">
+                @auth
                 <a href="{{ route('order.history') }}"
                     class="nav-item nav-link{{ request()->is('order/history') ? ' active' : '' }}">
                     <i class="fas fa-shopping-bag text-primary"></i>
                     Histori Pembelian
                 </a>
+                @endauth
                 <a href="{{ route('cart') }}" class="nav-item nav-link{{ request()->is('cart') ? ' active' : '' }}">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">{{ count(session('cart', [])) }}</span>
