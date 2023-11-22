@@ -27,29 +27,32 @@ class CartController extends Controller
         return view('cart', compact('cartItems', 'subtotal', 'shipping', 'total'));
     }
 
-
-
-
-
     public function addToCart(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
-        $cart = session('cart', []);
-
         // Get the quantity directly from the request
         $quantity = $request->input('quantity', 1);
+
+        // Check if the product has a promo
+        $discountedPrice = $product->price;
+
+        if ($product->promos->isNotEmpty()) {
+            $discountedPrice = $product->price - ($product->price * $product->promos[0]->discount_percentage / 100);
+        }
+
+        $cart = session('cart', []);
 
         // Check if the product is already in the cart
         if (array_key_exists($product->id, $cart)) {
             // If yes, update the quantity
             $cart[$product->id]['quantity'] += $quantity;
         } else {
-            // If not, add the product to the cart
+            // If not, add the product to the cart with discounted price
             $cart[$product->id] = [
                 'id' => $product->id,
                 'name' => $product->name,
-                'price' => $product->price,
+                'price' => $discountedPrice, // Use the discounted price
                 'quantity' => $quantity,
                 'image' => $product->image,
             ];
@@ -67,7 +70,6 @@ class CartController extends Controller
             return back()->with('success', 'Product added to cart successfully.');
         }
     }
-
 
     public function removeFromCart($id)
     {
@@ -114,11 +116,6 @@ class CartController extends Controller
         }
 
         return $subtotal;
-    }
-
-    public function checkout()
-    {
-        return view('checkout');
     }
 
     public function orderHistory()
