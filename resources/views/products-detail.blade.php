@@ -206,9 +206,12 @@
                             class="btn btn-sm text-dark p-0">
                             <i class="fas fa-eye text-primary mr-1"></i>View Detail
                         </a>
-                        <a href="{{ route('cart') }}" class="btn btn-sm text-dark p-0">
-                            <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
-                        </a>
+                        <form action="{{ route('cart.add', ['id' => $relatedProduct->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-sm text-dark p-0">
+                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                            </button>
+                        </form>
                     </div>
                 </div>
                 @endforeach
