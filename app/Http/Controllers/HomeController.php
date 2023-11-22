@@ -20,7 +20,9 @@ class HomeController extends Controller
 
     public function home()
     {
-        return view('welcome');
+        $products = Product::all();
+
+        return view('welcome', compact('products'));
     }
 
     public function contact()

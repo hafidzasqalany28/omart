@@ -32,7 +32,7 @@
 </div>
 <!-- Featured End -->
 
-
+{{--
 <!-- Categories Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
@@ -92,7 +92,7 @@
         </div>
     </div>
 </div>
-<!-- Categories End -->
+<!-- Categories End --> --}}
 
 
 <!-- Offer Start -->
@@ -121,7 +121,6 @@
     </div>
 </div>
 <!-- Offer End -->
-
 
 <!-- Products Start -->
 <div class="container-fluid pt-5">
