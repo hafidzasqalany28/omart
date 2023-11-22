@@ -33,6 +33,8 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::get('/order/history', [CartController::class, 'orderHistory'])->name('order.history');
 });

@@ -4,11 +4,6 @@
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
-        <div class="d-inline-flex">
-            <p class="m-0"><a href="">Home</a></p>
-            <p class="m-0 px-2">-</p>
-            <p class="m-0">Shop Detail</p>
-        </div>
     </div>
 </div>
 <!-- Page Header End -->
@@ -49,9 +44,8 @@
                 @if($product->promos->isNotEmpty())
                 <!-- Display promotional price and discount badge if available -->
                 <h3 class="font-weight-semi-bold mb-0">
-                    Rp {{ number_format($product->price -
-                    ($product->price *
-                    $product->promos[0]->discount_percentage / 100), 0, ',', '.') }}
+                    Rp {{ number_format($product->price - ($product->price * $product->promos[0]->discount_percentage /
+                    100), 0, ',', '.') }}
                 </h3>
                 <h6 class="text-muted ml-2"><del>Rp {{ number_format($product->price, 0, ',', '.') }}</del></h6>
                 <span class="badge badge-warning ml-2">
@@ -80,14 +74,22 @@
                             <i class="fa fa-minus"></i>
                         </button>
                     </div>
-                    <input type="text" class="form-control bg-secondary text-center" value="1">
+                    <input type="number" class="form-control bg-secondary text-center" id="quantityInput"
+                        name="quantity" value="1">
                     <div class="input-group-btn">
                         <button class="btn btn-primary btn-plus">
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
                 </div>
-                <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                <form action="{{ route('cart.add', ['id' => $product->id]) }}" method="POST">
+                    @csrf
+                    <!-- Include the quantity input in the form with a name attribute -->
+                    <input type="hidden" name="quantity" id="addToCartQuantity" value="1">
+                    <button type="submit" class="btn btn-primary px-3">
+                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                    </button>
+                </form>
             </div>
             <!-- Add your dynamic product sharing here -->
         </div>
@@ -110,7 +112,6 @@
                 </div>
                 <div class="tab-pane fade" id="tab-pane-2">
                     <h4 class="mb-3">Promo</h4>
-
                     @if($product->promos->isNotEmpty())
                     @foreach ($product->promos as $promo)
                     <div class="mb-3">
@@ -118,8 +119,7 @@
                         <p>{{ $promo->description }}</p>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Discount Percentage: <span class="badge badge-warning">{{
-                                    $promo->discount_percentage
-                                    }}</span>%</li>
+                                    $promo->discount_percentage }}</span>%</li>
                             <li class="list-group-item">Start Date: {{ $promo->start_date }}</li>
                             <li class="list-group-item">End Date: {{ $promo->end_date }}</li>
                         </ul>
@@ -163,7 +163,6 @@
     </div>
 </div>
 <!-- Shop Detail End -->
-
 
 <!-- Products Start -->
 <div class="container-fluid py-5">
@@ -218,4 +217,31 @@
     </div>
 </div>
 <!-- Products End -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var quantityInput = document.getElementById('quantityInput');
+        var addToCartQuantity = document.getElementById('addToCartQuantity');
+        var btnMinus = document.querySelector('.btn-minus');
+        var btnPlus = document.querySelector('.btn-plus');
+
+        // Update the hidden input value and form when the quantity changes
+        quantityInput.addEventListener('input', function () {
+            addToCartQuantity.value = this.value;
+        });
+
+        // Add event listeners for the plus and minus buttons if available
+        if (btnMinus && btnPlus) {
+            btnMinus.addEventListener('click', function () {
+                quantityInput.value = Math.max(parseInt(quantityInput.value, 10), 1);
+                addToCartQuantity.value = quantityInput.value;
+            });
+
+            btnPlus.addEventListener('click', function () {
+                quantityInput.value = parseInt(quantityInput.value, 10);
+                addToCartQuantity.value = quantityInput.value;
+            });
+        }
+    });
+</script>
 @endsection
