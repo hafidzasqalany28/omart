@@ -5,12 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\ReviewController;
-use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\CategoryController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/categories', [CategoryController::class, 'getCategories'])->name('categories');
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
