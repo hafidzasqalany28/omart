@@ -21,14 +21,14 @@ class ProductsSeeder extends Seeder
         foreach ($categoryIds as $category => $categoryId) {
             for ($i = 1; $i <= 3; $i++) {
                 $productName = "$category Product $i";
-                $imageName = Str::slug($productName, '-') . '.jpg';
+                $imageName = Str::slug($productName, '-') . '.png';
 
                 Product::create([
                     'name' => $productName,
                     'description' => "Description for $productName",
                     'price' => rand(10000, 100000),
                     'category_id' => $categoryId,
-                    'image' => "/image/$imageName",
+                    'image' => "$imageName",
                 ]);
             }
         }
