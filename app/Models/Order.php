@@ -7,14 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
-        'product_id',
         'total_amount',
         'status',
-        'quantity',
+        'quantity', // tambahkan jika diperlukan
     ];
 
     public function user()
@@ -22,10 +19,12 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product()
+    // app/Models/Order.php
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class)->withPivot('quantity', 'price');
     }
+
 
     public function payment()
     {

@@ -84,7 +84,22 @@ class MidtransController extends Controller
             'item_details' => $itemDetails,
             'customer_details' => $customerDetails,
         ];
+        // Create the order
+        $order = new Order();
+        $order->user_id = auth()->user()->id;
+        $order->total_amount = $totalAmount;
+        $order->status = 'pending';
+        $order->quantity = count($cartItems);
+        $order->save();
 
+        // Attach each product to the order
+        foreach ($cartItems as $item) {
+            $product = Product::find($item['id']);
+            $order->products()->attach($product, [
+                'quantity' => $item['quantity'],
+                'price' => round($item['price']),
+            ]);
+        }
         try {
             // Create the transaction
             $paymentResponse = Snap::createTransaction($transactionData);
