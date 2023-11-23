@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Midtrans\Snap;
 use Midtrans\Config;
+use App\Models\Order;
+use App\Models\Product;
 use Midtrans\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -48,18 +50,18 @@ class MidtransController extends Controller
         Config::$clientKey = config('services.midtrans.clientKey');
         Config::$isProduction = !config('services.midtrans.isSandbox');
 
-        $cartItems = $request->session()->get('cart.items', []);
+        $cartItems = $request->session()->get('cart', []);
         $subtotal = 0;
 
         foreach ($cartItems as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        $totalAmount = $subtotal;
+        $totalAmount = round($subtotal);
 
         $transactionDetails = [
             'order_id' => $request->input('order_id'),
-            'gross_amount' => $request->input('gross_amount'),
+            'gross_amount' => $totalAmount, // Round the value
         ];
 
         $itemDetails = [];
@@ -67,7 +69,7 @@ class MidtransController extends Controller
         foreach ($cartItems as $item) {
             $itemDetails[] = [
                 'id' => $item['id'],
-                'price' => $item['price'],
+                'price' => round($item['price']), // Round the value
                 'quantity' => $item['quantity'],
                 'name' => $item['name'],
             ];
@@ -89,12 +91,11 @@ class MidtransController extends Controller
 
             // Get the Snap token from the payment response
             $snapToken = $paymentResponse->token;
-            dd($paymentResponse);
-            // Set the appropriate headers for the redirect
-            header('Location: https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken);
-            exit;
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+
+        // Return a redirect response with the Snap token
+        return redirect()->away('https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken);
     }
 }
