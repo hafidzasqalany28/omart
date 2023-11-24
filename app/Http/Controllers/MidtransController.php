@@ -100,6 +100,8 @@ class MidtransController extends Controller
                 'price' => round($item['price']),
             ]);
         }
+        // Membuat notifikasi URL untuk menanggapi hasil pembayaran dari Midtrans
+        $notificationUrl = route('midtrans.notification');
         try {
             // Create the transaction
             $paymentResponse = Snap::createTransaction($transactionData);
@@ -111,6 +113,37 @@ class MidtransController extends Controller
         }
 
         // Return a redirect response with the Snap token
-        return redirect()->away('https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken);
+        // Return a redirect response with the Snap token
+        return redirect()->away('https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken . '?callback=' . urlencode($notificationUrl));
+    }
+
+    public function notification(Request $request)
+    {
+        $payload = $request->getContent();
+        $notification = json_decode($payload);
+
+        // Verifikasi keaslian notifikasi dari Midtrans
+        $signatureKey = config('services.midtrans.serverKey');
+        $isSignatureValid = $this->verifySignature($payload, $request->header('Signature'), $signatureKey);
+
+        if ($isSignatureValid && $notification->status_code == 200) {
+            // Pembayaran sukses, lakukan pembaruan status pesanan di sini
+            $orderId = $notification->order_id;
+            $order = Order::where('id', $orderId)->first();
+
+            if ($order) {
+                $order->status = 'completed'; // Ubah status sesuai dengan kebutuhan Anda
+                $order->save();
+            }
+        }
+
+        return response('OK', 200);
+    }
+
+    private function verifySignature($payload, $headerSignature, $secretKey)
+    {
+        $expectedSignature = base64_encode(hash_hmac('sha256', $payload, $secretKey, true));
+
+        return $expectedSignature === $headerSignature;
     }
 }

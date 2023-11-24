@@ -31,6 +31,7 @@ Route::get('/reviews', [HomeController::class, 'reviews'])->name('reviews');
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/products/filter', [ProductController::class, 'index'])->name('products.filter');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.detail');
+Route::post('/midtrans/notification', [MidtransController::class, 'notification'])->name('midtrans.notification');
 
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
