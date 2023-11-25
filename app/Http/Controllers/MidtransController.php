@@ -17,7 +17,6 @@ class MidtransController extends Controller
         $cartItems = $request->session()->get('cart', []);
         $subtotal = 0;
         $itemDetails = [];
-
         // Hitung subtotal dan dapatkan detail item
         foreach ($cartItems as $item) {
             $subtotal += $item['price'] * $item['quantity'];
@@ -59,8 +58,17 @@ class MidtransController extends Controller
 
         $totalAmount = round($subtotal);
 
+        // Create the order
+        $order = new Order();
+        $order->user_id = auth()->user()->id;
+        $order->total_amount = $totalAmount;
+        $order->status = 'pending';
+        $order->quantity = count($cartItems);
+        $order->save();
+
+        // Set the order_id in transactionDetails to match the created order's ID
         $transactionDetails = [
-            'order_id' => $request->input('order_id'),
+            'order_id' => 'cc-' . $order->id,
             'gross_amount' => $totalAmount, // Round the value
         ];
 
@@ -84,13 +92,6 @@ class MidtransController extends Controller
             'item_details' => $itemDetails,
             'customer_details' => $customerDetails,
         ];
-        // Create the order
-        $order = new Order();
-        $order->user_id = auth()->user()->id;
-        $order->total_amount = $totalAmount;
-        $order->status = 'pending';
-        $order->quantity = count($cartItems);
-        $order->save();
 
         // Attach each product to the order
         foreach ($cartItems as $item) {
@@ -100,6 +101,7 @@ class MidtransController extends Controller
                 'price' => round($item['price']),
             ]);
         }
+
         // Membuat notifikasi URL untuk menanggapi hasil pembayaran dari Midtrans
         $notificationUrl = route('midtrans.notification');
         try {
@@ -113,9 +115,9 @@ class MidtransController extends Controller
         }
 
         // Return a redirect response with the Snap token
-        // Return a redirect response with the Snap token
         return redirect()->away('https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken . '?callback=' . urlencode($notificationUrl));
     }
+
 
     public function notification(Request $request)
     {
@@ -124,15 +126,18 @@ class MidtransController extends Controller
 
         // Verifikasi keaslian notifikasi dari Midtrans
         $signatureKey = config('services.midtrans.serverKey');
-        $isSignatureValid = $this->verifySignature($payload, $request->header('Signature'), $signatureKey);
+        // $isSignatureValid = $this->verifySignature($payload, $request->header('Signature'), $signatureKey);
 
-        if ($isSignatureValid && $notification->status_code == 200) {
-            // Pembayaran sukses, lakukan pembaruan status pesanan di sini
-            $orderId = $notification->order_id;
-            $order = Order::where('id', $orderId)->first();
+        if ($notification->status_code == 200) {
+            // Extract numeric part from Midtrans order ID
+            $midtransOrderId = $notification->order_id;
+            $numericOrderId = (int) preg_replace('/[^0-9]/', '', $midtransOrderId);
+
+            // Query order using the extracted numeric ID
+            $order = Order::find($numericOrderId);
 
             if ($order) {
-                $order->status = 'completed'; // Ubah status sesuai dengan kebutuhan Anda
+                $order->status = 'processing'; // Ubah status sesuai dengan kebutuhan Anda
                 $order->save();
             }
         }
@@ -140,10 +145,10 @@ class MidtransController extends Controller
         return response('OK', 200);
     }
 
-    private function verifySignature($payload, $headerSignature, $secretKey)
-    {
-        $expectedSignature = base64_encode(hash_hmac('sha256', $payload, $secretKey, true));
+    // private function verifySignature($payload, $headerSignature, $secretKey)
+    // {
+    //     $expectedSignature = base64_encode(hash_hmac('sha256', $payload, $secretKey, true));
 
-        return $expectedSignature === $headerSignature;
-    }
+    //     return $expectedSignature === $headerSignature;
+    // }
 }
