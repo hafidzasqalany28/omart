@@ -117,15 +117,16 @@
                         <!-- Product Actions -->
                         <div class="card-footer bg-light border d-flex justify-content-between">
                             <a href="{{ route('products.detail', ['id' => $product->id]) }}"
-                                class="btn btn-sm btn-outline-dark">
-                                <i class="fas fa-eye text-primary mr-2"></i>View Detail
+                                class="btn btn-sm text-dark p-0">
+                                <i class="fas fa-eye text-primary mr-1"></i>View Detail
                             </a>
-                            <form action="{{ route('cart.add', ['id' => $product->id]) }}" method="POST">
+                            <form action="{{ route('cart.add', ['id' => $product->id]) }}" method="POST"
+                                class="d-inline">
                                 @csrf
                                 <input type="hidden" name="quantity" value="1">
                                 <!-- Include a hidden input for quantity -->
-                                <button type="submit" class="btn btn-sm btn-outline-dark">
-                                    <i class="fas fa-shopping-cart text-primary mr-2"></i>Add To Cart
+                                <button type="submit" class="btn btn-sm text-dark p-0">
+                                    <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
                                 </button>
                             </form>
                         </div>

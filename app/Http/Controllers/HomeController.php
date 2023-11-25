@@ -20,10 +20,29 @@ class HomeController extends Controller
 
     public function home()
     {
-        $products = Product::all();
+        // Mengambil 6 produk terlaris berdasarkan total kuantitas terjual
+        $bestSellingProducts = Product::withCount('orders')
+            ->orderByDesc('orders_count')
+            ->take(6)
+            ->get();
 
-        return view('welcome', compact('products'));
+        // Mengambil 6 produk promo
+        $promoProducts = Product::whereHas('promos', function ($query) {
+            $query->where('start_date', '<=', now())
+                ->where('end_date', '>=', now());
+        })
+            ->take(6)
+            ->get();
+
+        // Mengambil 6 produk terbaru berdasarkan tanggal pembuatan
+        $newestProducts = Product::orderByDesc('created_at')
+            ->take(6)
+            ->get();
+
+        return view('welcome', compact('bestSellingProducts', 'promoProducts', 'newestProducts'));
     }
+
+
 
     public function contact()
     {
