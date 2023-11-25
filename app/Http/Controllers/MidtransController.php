@@ -51,12 +51,13 @@ class MidtransController extends Controller
 
         $cartItems = $request->session()->get('cart', []);
         $subtotal = 0;
+        $shipping = 20000; // Adjust the shipping cost as needed
 
         foreach ($cartItems as $item) {
             $subtotal += $item['price'] * $item['quantity'];
         }
 
-        $totalAmount = round($subtotal);
+        $totalAmount = round($subtotal + $shipping);
 
         // Create the order
         $order = new Order();
@@ -82,6 +83,14 @@ class MidtransController extends Controller
                 'name' => $item['name'],
             ];
         }
+
+        // Add shipping as a separate item
+        $itemDetails[] = [
+            'id' => 'shipping',
+            'price' => round($shipping),
+            'quantity' => 1,
+            'name' => 'Shipping Cost',
+        ];
 
         $customerDetails = [
             // Add customer details as needed
@@ -117,6 +126,7 @@ class MidtransController extends Controller
         // Return a redirect response with the Snap token
         return redirect()->away('https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken . '?callback=' . urlencode($notificationUrl));
     }
+
 
 
     public function notification(Request $request)
