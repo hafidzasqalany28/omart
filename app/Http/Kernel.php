@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CustomerMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\AuthenticateMidtransCallback;
 
 class Kernel extends HttpKernel
 {
@@ -71,5 +72,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'admin' => AdminMiddleware::class,
         'customer' => CustomerMiddleware::class,
+        'auth.midtrans' => AuthenticateMidtransCallback::class,
     ];
 }

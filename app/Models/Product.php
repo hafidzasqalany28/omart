@@ -15,7 +15,13 @@ class Product extends Model
         'price',
         'category_id',
         'image',
+        'quantity',
     ];
+
+    public function reduceStock($quantity)
+    {
+        $this->decrement('quantity', $quantity);
+    }
 
     public function category()
     {

@@ -6,29 +6,29 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ProductsSeeder extends Seeder
 {
     public function run()
     {
-        $categoryIds = [];
+        $categories = ['Makanan', 'Minuman', 'Kebutuhan Dapur', 'Rumah Tangga', 'Ibu & Anak'];
 
-        foreach (['Makanan', 'Minuman', 'Kebutuhan Dapur', 'Rumah Tangga', 'Ibu & Anak'] as $category) {
-            $categoryIds[$category] = Category::create(['name' => $category])->id;
-        }
+        foreach ($categories as $category) {
+            $categoryModel = Category::create(['name' => $category]);
 
-        foreach ($categoryIds as $category => $categoryId) {
             for ($i = 1; $i <= 3; $i++) {
                 $productName = "$category Product $i";
                 $imageName = Str::slug($productName, '-') . '.png';
+                $price = rand(10000, 100000);
+                $quantity = rand(10, 50);
 
                 Product::create([
                     'name' => $productName,
                     'description' => "Description for $productName",
-                    'price' => rand(10000, 100000),
-                    'category_id' => $categoryId,
-                    'image' => "$imageName",
+                    'price' => $price,
+                    'quantity' => $quantity,
+                    'category_id' => $categoryModel->id,
+                    'image' => $imageName,
                 ]);
             }
         }

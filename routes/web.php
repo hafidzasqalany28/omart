@@ -29,17 +29,27 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/reviews', [HomeController::class, 'reviews'])->name('reviews');
 Route::get('/order/history', [HomeController::class, 'orderHistory'])->name('order.history');
 
-Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/products/filter', [ProductController::class, 'index'])->name('products.filter');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.detail');
-Route::post('/midtrans/notification', [MidtransController::class, 'notification'])->name('midtrans.notification');
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('products');
+    Route::get('/filter', [ProductController::class, 'index'])->name('products.filter');
+    Route::get('/{id}', [ProductController::class, 'show'])->name('products.detail');
+});
+
+Route::post('/midtrans/notification', [MidtransController::class, 'notification'])
+    ->name('midtrans.notification');
+// ->withoutMiddleware(['auth', 'customer'])
+// ->middleware('auth.midtrans');
 
 Route::middleware(['auth', 'customer'])->group(function () {
-    Route::get('/cart', [CartController::class, 'showCart'])->name('cart');
-    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::post('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    Route::get('/checkout', [MidtransController::class, 'checkout'])->name('checkout');
-    Route::get('/checkout/pay', [MidtransController::class, 'pay'])->name('checkout.pay');
+    Route::prefix('cart')->group(function () {
+        Route::get('/', [CartController::class, 'showCart'])->name('cart');
+        Route::post('/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::post('/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    });
+    Route::prefix('checkout')->group(function () {
+        Route::get('/', [MidtransController::class, 'checkout'])->name('checkout');
+        Route::get('/pay', [MidtransController::class, 'pay'])->name('checkout.pay');
+    });
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
