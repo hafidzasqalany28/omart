@@ -6,33 +6,54 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class MidtransController extends Controller
 {
     public function checkout(Request $request)
     {
-        $cartItems = $request->session()->get('cart', []);
-        $subtotal = 0;
-        $itemDetails = [];
+        // Retrieve cart items from the database for the authenticated user
+        $cartItems = CartItem::where('user_id', Auth::id())->with('product')->get();
 
-        // Calculate subtotal and gather item details
-        foreach ($cartItems as $item) {
-            $subtotal += $item['price'] * $item['quantity'];
-            $itemDetails[] = [
-                'id' => $item['id'],
-                'price' => $item['price'],
-                'quantity' => $item['quantity'],
-                'name' => $item['name'],
-            ];
+        // Check if the cart is empty
+        if ($cartItems->isEmpty()) {
+            return view('checkout', [
+                'cartItems' => $cartItems,
+                'subtotal' => 0,
+                'shipping' => 0,
+                'total' => 0,
+            ]);
         }
 
-        $shipping = 20000; // Adjust as needed
+        $subtotal = $this->getCartSubtotal($cartItems);
+        $shipping = 20000; // Adjust with the appropriate shipping cost
         $total = $subtotal + $shipping;
 
         // Display checkout view with cart information
-        return view('checkout', compact('cartItems', 'subtotal', 'total', 'itemDetails', 'shipping'));
+        return view('checkout', compact('cartItems', 'subtotal', 'total', 'shipping'));
+    }
+
+    // Add this new method to calculate cart subtotal
+    private function getCartSubtotal($cartItems)
+    {
+        $subtotal = 0;
+
+        foreach ($cartItems as $cartItem) {
+            // Assuming each cart item has a 'product' relation
+            $product = $cartItem->product;
+
+            // Calculate price based on promo if available
+            if ($product->promos->isNotEmpty()) {
+                $subtotal += ($product->price - ($product->price * $product->promos[0]->discount_percentage / 100)) * $cartItem->quantity;
+            } else {
+                $subtotal += $product->price * $cartItem->quantity;
+            }
+        }
+
+        return $subtotal;
     }
 
     public function pay(Request $request)
@@ -48,15 +69,17 @@ class MidtransController extends Controller
         Config::$clientKey = config('services.midtrans.clientKey');
         Config::$isProduction = !config('services.midtrans.isSandbox');
 
-        $cartItems = $request->session()->get('cart', []);
-        $subtotal = 0;
-        $shipping = 20000; // Adjust the shipping cost as needed
+        // Retrieve cart items from the database for the authenticated user
+        $cartItems = CartItem::where('user_id', Auth::id())->with('product')->get();
 
-        // Calculate subtotal
-        foreach ($cartItems as $item) {
-            $subtotal += $item['price'] * $item['quantity'];
+        // Check if the cart is empty
+        if ($cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Cart is empty.');
         }
 
+        // Calculate subtotal and shipping
+        $subtotal = $this->getCartSubtotal($cartItems);
+        $shipping = 20000; // Adjust with the appropriate shipping cost
         $totalAmount = round($subtotal + $shipping);
 
         // Create the order
@@ -134,7 +157,7 @@ class MidtransController extends Controller
         $order->user_id = auth()->user()->id;
         $order->total_amount = $totalAmount;
         $order->status = 'pending';
-        $order->quantity = count($cartItems);
+        $order->quantity = $cartItems->sum('quantity');
         $order->save();
 
         return $order;
@@ -144,16 +167,23 @@ class MidtransController extends Controller
     {
         $itemDetails = [];
 
-        foreach ($cartItems as $item) {
+        foreach ($cartItems as $cartItem) {
+            $product = $cartItem->product;
+
+            // Menggunakan harga promo jika tersedia, jika tidak, gunakan harga dasar
+            $itemPrice = $product->promos->isNotEmpty()
+                ? ($product->price - ($product->price * $product->promos[0]->discount_percentage / 100))
+                : $product->price;
+
             $itemDetails[] = [
-                'id' => $item['id'],
-                'price' => round($item['price']),
-                'quantity' => $item['quantity'],
-                'name' => $item['name'],
+                'id' => $product->id,
+                'price' => round($itemPrice),
+                'quantity' => $cartItem->quantity,
+                'name' => $product->name,
             ];
         }
 
-        // Add shipping as a separate item
+        // Menambahkan biaya pengiriman sebagai item terpisah
         $itemDetails[] = [
             'id' => 'shipping',
             'price' => round($shipping),
@@ -166,27 +196,29 @@ class MidtransController extends Controller
 
     private function prepareCustomerDetails()
     {
+        $user = auth()->user();
+
         return [
-            'first_name' => auth()->user()->name,
-            'email' => auth()->user()->email,
-            'phone' => auth()->user()->phone_number,
+            'first_name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone_number,
             'billing_address' => [
-                'first_name' => auth()->user()->name,
-                'address' => auth()->user()->address,
+                'first_name' => $user->name,
+                'address' => $user->address,
             ],
             'shipping_address' => [
-                'first_name' => auth()->user()->name,
+                'first_name' => $user->name,
             ],
         ];
     }
 
     private function attachProductsToOrder($order, $cartItems)
     {
-        foreach ($cartItems as $item) {
-            $product = Product::find($item['id']);
+        foreach ($cartItems as $cartItem) {
+            $product = $cartItem->product;
             $order->products()->attach($product, [
-                'quantity' => $item['quantity'],
-                'price' => round($item['price']),
+                'quantity' => $cartItem->quantity,
+                'price' => round($product->price),
             ]);
         }
     }

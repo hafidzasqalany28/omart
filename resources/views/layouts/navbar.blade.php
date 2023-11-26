@@ -64,7 +64,7 @@
                 @endauth
                 <a href="{{ route('cart') }}" class="nav-item nav-link{{ request()->is('cart') ? ' active' : '' }}">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">{{ count(session('cart', [])) }}</span>
+                    <span class="badge">{{ \App\Models\CartItem::where('user_id', auth()->id())->count() }}</span>
                 </a>
             </div>
         </div>

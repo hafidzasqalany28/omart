@@ -32,22 +32,22 @@
                     @forelse($cartItems as $item)
                     <tr>
                         <td class="align-middle">
-                            @if(isset($item['image']))
+                            @if(isset($item->product->image))
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('img/products/' . $item['image']) }}" alt="{{ $item['name'] }}"
-                                    style="width: 50px;">
-                                <span class="ml-2">{{ $item['name'] }}</span>
+                                <img src="{{ asset('img/products/' . $item->product->image) }}"
+                                    alt="{{ $item->product->name }}" style="width: 50px;">
+                                <span class="ml-2">{{ $item->product->name }}</span>
                             </div>
                             @endif
                         </td>
                         <td class="align-middle">
-                            @if(isset($item['promos']) && $item['promos']->isNotEmpty())
-                            <del>Rp {{ number_format($item['price'], 0, ',', '.') }}</del>
+                            @if(isset($item->product->promos) && $item->product->promos->isNotEmpty())
+                            <del>Rp {{ number_format($item->product->price, 0, ',', '.') }}</del>
                             <br>
-                            Rp {{ number_format($item['price'] - ($item['price'] *
-                            $item['promos'][0]->discount_percentage / 100), 0, ',', '.') }}
+                            Rp {{ number_format($item->product->price - ($item->product->price *
+                            $item->product->promos[0]->discount_percentage / 100), 0, ',', '.') }}
                             @else
-                            Rp {{ number_format($item['price'], 0, ',', '.') }}
+                            Rp {{ number_format($item->product->price, 0, ',', '.') }}
                             @endif
                         </td>
                         <td class="align-middle">
@@ -58,7 +58,7 @@
                                     </button>
                                 </div>
                                 <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="{{ $item['quantity'] }}">
+                                    value="{{ $item->quantity }}">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-primary btn-plus">
                                         <i class="fa fa-plus"></i>
@@ -66,9 +66,9 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="align-middle">Rp {{ number_format($item['subtotal'], 0, ',', '.') }}</td>
+                        <td class="align-middle">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                         <td class="align-middle">
-                            <form action="{{ route('cart.remove', ['id' => $item['id']]) }}" method="POST">
+                            <form action="{{ route('cart.remove', ['id' => $item->product->id]) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-primary"><i
                                         class="fa fa-times"></i></button>

@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\CartItem;
 
 class CartController extends Controller
 {
     public function showCart()
     {
-        $cartItems = session('cart', []);
+        // Retrieve cart items from the database for the authenticated user
+        $cartItems = CartItem::where('user_id', auth()->id())->with('product')->get();
 
         // Cek apakah keranjang belanja kosong
-        if (empty($cartItems)) {
+        if ($cartItems->isEmpty()) {
             return view('cart', ['cartItems' => $cartItems, 'subtotal' => 0, 'shipping' => 0, 'total' => 0]);
         }
 
@@ -34,32 +36,20 @@ class CartController extends Controller
         // Get the quantity directly from the request
         $quantity = $request->input('quantity', 1);
 
-        // Check if the product has a promo
-        $discountedPrice = $product->price;
+        // Check if the product is already in the cart for the authenticated user
+        $cartItem = CartItem::where('user_id', auth()->id())->where('product_id', $product->id)->first();
 
-        if ($product->promos->isNotEmpty()) {
-            $discountedPrice = $product->price - ($product->price * $product->promos[0]->discount_percentage / 100);
-        }
-
-        $cart = session('cart', []);
-
-        // Check if the product is already in the cart
-        if (array_key_exists($product->id, $cart)) {
+        if ($cartItem) {
             // If yes, update the quantity
-            $cart[$product->id]['quantity'] += $quantity;
+            $cartItem->update(['quantity' => $cartItem->quantity + $quantity]);
         } else {
-            // If not, add the product to the cart with discounted price
-            $cart[$product->id] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $discountedPrice, // Use the discounted price
+            // If not, add the product to the cart
+            CartItem::create([
+                'user_id' => auth()->id(),
+                'product_id' => $product->id,
                 'quantity' => $quantity,
-                'image' => $product->image,
-            ];
+            ]);
         }
-
-        // Save the cart back to the session
-        session(['cart' => $cart]);
 
         // Check if the request has the 'quantity' input
         if ($request->has('quantity')) {
@@ -73,13 +63,8 @@ class CartController extends Controller
 
     public function removeFromCart($id)
     {
-        $cart = session('cart', []);
-
-        // Hapus item dari keranjang belanja berdasarkan ID produk
-        unset($cart[$id]);
-
-        // Simpan kembali ke dalam session
-        session(['cart' => $cart]);
+        // Remove the item from the cart based on product ID and user ID
+        CartItem::where('user_id', auth()->id())->where('product_id', $id)->delete();
 
         return redirect()->route('cart')->with('success', 'Product removed from cart successfully.');
     }
@@ -89,13 +74,14 @@ class CartController extends Controller
         $subtotal = 0;
 
         foreach ($cart as $item) {
-            $product = Product::find($item['id']);
+            // Assuming each item in the cart has a 'product' relation
+            $product = $item->product;
 
             // Hitung harga berdasarkan promo jika tersedia
             if ($product->promos->isNotEmpty()) {
-                $subtotal += ($product->price - ($product->price * $product->promos[0]->discount_percentage / 100)) * $item['quantity'];
+                $subtotal += ($product->price - ($product->price * $product->promos[0]->discount_percentage / 100)) * $item->quantity;
             } else {
-                $subtotal += $product->price * $item['quantity'];
+                $subtotal += $product->price * $item->quantity;
             }
         }
 
@@ -105,14 +91,14 @@ class CartController extends Controller
     // Add this new method to calculate item subtotal
     private function calculateItemSubtotal($item)
     {
-        $product = Product::find($item['id']);
+        $product = $item->product;
         $subtotal = 0;
 
         // Hitung harga berdasarkan promo jika tersedia
         if ($product->promos->isNotEmpty()) {
-            $subtotal = ($product->price - ($product->price * $product->promos[0]->discount_percentage / 100)) * $item['quantity'];
+            $subtotal = ($product->price - ($product->price * $product->promos[0]->discount_percentage / 100)) * $item->quantity;
         } else {
-            $subtotal = $product->price * $item['quantity'];
+            $subtotal = $product->price * $item->quantity;
         }
 
         return $subtotal;

@@ -25,8 +25,8 @@
                     <h5 class="font-weight-medium mb-3">Products</h5>
                     @foreach($cartItems as $item)
                     <div class="d-flex justify-content-between">
-                        <p>{{ $item['name'] }}</p>
-                        <p>Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}</p>
+                        <p>{{ $item->product->name }}</p>
+                        <p>Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</p>
                     </div>
                     @endforeach
                     <hr class="mt-0">
@@ -54,6 +54,7 @@
     </div>
 </div>
 <!-- Checkout End -->
+
 
 
 @endsection
