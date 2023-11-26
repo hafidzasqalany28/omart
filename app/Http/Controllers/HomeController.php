@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -52,5 +53,16 @@ class HomeController extends Controller
     public function reviews()
     {
         // Logika untuk halaman ulasan
+    }
+
+    public function orderHistory(Request $request)
+    {
+        $sort = $request->input('sort', 'desc');
+
+        $orderHistory = Order::where('user_id', auth()->id())
+            ->orderBy('created_at', $sort)
+            ->get();
+
+        return view('order-history', compact('orderHistory'));
     }
 }

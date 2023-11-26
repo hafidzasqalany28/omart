@@ -117,9 +117,4 @@ class CartController extends Controller
 
         return $subtotal;
     }
-
-    public function orderHistory()
-    {
-        // Logika untuk halaman riwayat pesanan
-    }
 }
