@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\MidtransController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +28,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/reviews', [HomeController::class, 'reviews'])->name('reviews');
 Route::get('/order/history', [HomeController::class, 'orderHistory'])->name('order.history');
+Route::post('/submit-review', [HomeController::class, 'submitReview'])->name('submit.review');
 
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('products');
@@ -41,6 +42,8 @@ Route::post('/midtrans/notification', [MidtransController::class, 'notification'
 // ->middleware('auth.midtrans');
 
 Route::middleware(['auth', 'customer'])->group(function () {
+    Route::get('/profile', [HomeController::class, 'showProfile'])->name('profile');
+    Route::patch('/profile/update', [HomeController::class, 'update'])->name('profile.update');
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'showCart'])->name('cart');
         Route::post('/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');

@@ -29,15 +29,15 @@
             <!-- Rating Section -->
             <div class="d-flex align-items-center mb-3">
                 <div class="text-primary mr-2">
-                    @for($i = 0; $i < 5; $i++) @if($i < $product->rating)
-                        <small class="fas fa-star"></small>
+                    @for($i = 0; $i < 5; $i++) @if($i < $averageRating) <small class="fas fa-star"></small>
                         @else
                         <small class="far fa-star"></small>
                         @endif
                         @endfor
                 </div>
-                <small class="pt-1">({{ $product->reviews_count }} Reviews)</small>
+                <small class="pt-1">({{ $reviewCount }} Reviews)</small>
             </div>
+
 
             <!-- Price -->
             <div class="d-flex align-items-center mb-4">
@@ -136,10 +136,10 @@
                             <h4 class="mb-4">{{ $reviewCount }} review(s) for "{{ $product->name }}"</h4>
                             @forelse($reviews as $review)
                             <div class="media mb-4">
-                                <img src="{{ $review->user_avatar }}" alt="Image" class="img-fluid mr-3 mt-1"
+                                <img src="{{ asset('img/user.png') }}" alt="Image" class="img-fluid mr-3 mt-1"
                                     style="width: 45px;">
                                 <div class="media-body">
-                                    <h6>{{ $review->user_name }}<small> - <i>{{ $review->created_at->format('d M Y')
+                                    <h6>{{ $review->user->name }}<small> - <i>{{ $review->created_at->format('d M Y')
                                                 }}</i></small></h6>
                                     <div class="text-primary mb-2">
                                         @for($i = 0; $i < $review->rating; $i++)

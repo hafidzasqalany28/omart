@@ -1,4 +1,5 @@
 @extends('layouts.layout')
+
 @section('content')
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
@@ -15,7 +16,7 @@
 
 <!-- Checkout Start -->
 <div class="container-fluid pt-5">
-    <div class="row px-xl-5">
+    <div class="row justify-content-center">
         <div class="col-lg-4">
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
@@ -54,7 +55,4 @@
     </div>
 </div>
 <!-- Checkout End -->
-
-
-
 @endsection

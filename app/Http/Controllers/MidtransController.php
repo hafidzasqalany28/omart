@@ -78,7 +78,7 @@ class MidtransController extends Controller
         $order = $this->createOrder($cartItems, $totalAmount);
 
         $transactionDetails = [
-            'order_id' => 'ee-' . $order->id,
+            'order_id' => 'gg-' . $order->id,
             'gross_amount' => $totalAmount,
         ];
 

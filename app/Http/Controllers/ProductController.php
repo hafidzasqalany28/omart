@@ -44,11 +44,15 @@ class ProductController extends Controller
         $reviews = $product->reviews;
         $reviewCount = $reviews->count();
 
+        // Calculate average rating
+        $averageRating = $product->reviews()->avg('rating');
+
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->inRandomOrder()
             ->limit(5)
             ->get();
-        return view('products-detail', compact('product', 'promo', 'reviews', 'reviewCount', 'relatedProducts'));
+
+        return view('products-detail', compact('product', 'promo', 'reviews', 'reviewCount', 'averageRating', 'relatedProducts'));
     }
 }
