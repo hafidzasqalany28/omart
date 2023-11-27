@@ -11,7 +11,7 @@ class Order extends Model
         'user_id',
         'total_amount',
         'status',
-        'quantity', // tambahkan jika diperlukan
+        'quantity',
     ];
 
     public function user()
@@ -19,12 +19,10 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    // app/Models/Order.php
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('quantity', 'price');
     }
-
 
     public function payment()
     {

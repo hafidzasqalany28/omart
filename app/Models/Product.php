@@ -28,12 +28,10 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // app/Models/Product.php
     public function orders()
     {
         return $this->belongsToMany(Order::class)->withPivot('quantity', 'price');
     }
-
 
     public function reviews()
     {
