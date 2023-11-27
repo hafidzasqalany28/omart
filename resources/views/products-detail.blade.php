@@ -1,13 +1,7 @@
 @extends('layouts.layout')
+@section('page-title', 'Product Detail')
+@section('breadcrumb', 'Product Detail')
 @section('content')
-<!-- Page Header Start -->
-<div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
-    </div>
-</div>
-<!-- Page Header End -->
-
 <!-- Shop Detail Start -->
 <div class="container-fluid py-5">
     <div class="row px-xl-5 align-items-center">
