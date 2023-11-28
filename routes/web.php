@@ -4,9 +4,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductController as ProductController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PromoController;
@@ -58,12 +59,17 @@ Route::middleware(['auth', 'customer'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::resource('products', ProductController::class, ['as' => 'admin']); // masih belom kelar
+        Route::resource('products', AdminProductController::class, ['as' => 'admin']); // masih belom kelar
         Route::resource('roles', RoleController::class, ['as' => 'admin'])->except(['show']);
         Route::resource('categories', CategoryController::class, ['as' => 'admin'])->except(['show']);
         Route::resource('promos', PromoController::class, ['as' => 'admin']);
         Route::resource('users', UserController::class, ['as' => 'admin']);
-        Route::resource('reviews', ReviewController::class, ['as' => 'admin']);
+        Route::prefix('reviews')->group(function () {
+            Route::get('/', [ReviewController::class, 'index'])->name('admin.reviews.index');
+            Route::get('/{product}', [ReviewController::class, 'show'])->name('admin.reviews.show');
+            Route::delete('/{review}', [ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+            Route::delete('/{product}/destroyAll', [ReviewController::class, 'destroyAll'])->name('admin.reviews.destroyAll');
+        });
 
         Route::resource('orders', OrderController::class, ['as' => 'admin']);
         Route::resource('payments', PaymentController::class, ['as' => 'admin']);

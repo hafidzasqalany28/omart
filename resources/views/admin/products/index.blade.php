@@ -33,8 +33,8 @@
                 <tr>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->description }}</td>
-                    <td>Rp {{ $product->price }}</td>
+                    <td class="text-truncate" style="max-width: 150px;">{{ $product->description }}</td>
+                    <td class="text-nowrap">Rp {{ $product->price }}</td>
                     <td>{{ $product->category->name }}</td>
                     <td>
                         @if($product->image)
