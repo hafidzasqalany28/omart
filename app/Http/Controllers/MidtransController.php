@@ -25,7 +25,7 @@ class MidtransController extends Controller
         }
 
         $subtotal = $this->getCartSubtotal($cartItems);
-        $shipping = 20000; // Adjust with the appropriate shipping cost
+        $shipping = 20000;
         $total = $subtotal + $shipping;
 
         return view('checkout', compact('cartItems', 'subtotal', 'total', 'shipping'));
@@ -72,13 +72,13 @@ class MidtransController extends Controller
         }
 
         $subtotal = $this->getCartSubtotal($cartItems);
-        $shipping = 20000; // Adjust with the appropriate shipping cost
+        $shipping = 20000;
         $totalAmount = round($subtotal + $shipping);
 
         $order = $this->createOrder($cartItems, $totalAmount);
 
         $transactionDetails = [
-            'order_id' => 'gg-' . $order->id,
+            'order_id' => 'jj-' . $order->id,
             'gross_amount' => $totalAmount,
         ];
 
@@ -167,7 +167,7 @@ class MidtransController extends Controller
 
             $itemDetails[] = [
                 'id' => $product->id,
-                'price' => round($itemPrice),
+                'price' => (int) round($itemPrice / $cartItem->quantity),
                 'quantity' => $cartItem->quantity,
                 'name' => $product->name,
             ];
@@ -175,7 +175,7 @@ class MidtransController extends Controller
 
         $itemDetails[] = [
             'id' => 'shipping',
-            'price' => round($shipping),
+            'price' => (int) round($shipping),
             'quantity' => 1,
             'name' => 'Shipping Cost',
         ];
@@ -207,7 +207,7 @@ class MidtransController extends Controller
             $product = $cartItem->product;
             $order->products()->attach($product, [
                 'quantity' => $cartItem->quantity,
-                'price' => round($product->price),
+                'price' => (int) round($product->price),
             ]);
         }
     }
