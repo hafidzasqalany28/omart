@@ -11,7 +11,7 @@
     <div class="card-body">
         <h2>{{ $product->name }}</h2>
         <p><strong>Description:</strong> {{ $product->description }}</p>
-        <p><strong>Price:</strong> Rp {{ $product->price }}</p>
+        <p><strong>Price:</strong>Rp {{ number_format($product->price, 0, ',', '.') }}</p>
         <p><strong>Category:</strong> {{ $product->category->name }}</p>
         <p><strong>Image:</strong></p>
         @if($product->image)
@@ -20,6 +20,7 @@
         @else
         No Image
         @endif
+        <p><strong>Quantity:</strong> {{ $product->quantity }}</p>
         <p><strong>Created At:</strong> {{ $product->created_at }}</p>
         <p><strong>Updated At:</strong> {{ $product->updated_at }}</p>
         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning">Edit</a>

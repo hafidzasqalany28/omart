@@ -34,7 +34,7 @@
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
                     <td class="text-truncate" style="max-width: 150px;">{{ $product->description }}</td>
-                    <td class="text-nowrap">Rp {{ $product->price }}</td>
+                    <td class="text-nowrap">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                     <td>{{ $product->category->name }}</td>
                     <td>
                         @if($product->image)

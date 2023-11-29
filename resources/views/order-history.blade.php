@@ -47,7 +47,9 @@
                             $subtotal = $product->pivot->price * $product->pivot->quantity;
                             $totalProductsPrice += $subtotal;
                             @endphp
-                            <!-- Add the following lines to show review modal trigger -->
+
+                            <!-- Add the following lines to show review modal trigger only when status is completed -->
+                            @if($order->status === 'completed')
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#reviewModal{{ $product->id }}">
                                 Write a Review
@@ -55,6 +57,7 @@
 
                             <!-- Add the following lines to include the review modal -->
                             @include('layouts.review-modal', ['product' => $product, 'order' => $order])
+                            @endif
                         </li>
                         @empty
                         <li class="list-group-item text-muted">No products in this order.</li>

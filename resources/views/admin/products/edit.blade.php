@@ -41,6 +41,13 @@
             </div>
 
             <div class="form-group">
+                <label for="quantity">Product Quantity:</label>
+                <input type="number" name="quantity" id="quantity" class="form-control"
+                    value="{{ $product->quantity ?? '' }}" required>
+            </div>
+
+
+            <div class="form-group">
                 <label for="image">Product Image:</label>
                 <input type="file" name="image" id="image" class="form-control-file">
                 @if($product->image)

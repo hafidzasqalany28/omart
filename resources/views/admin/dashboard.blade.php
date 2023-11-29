@@ -75,7 +75,7 @@
                 <h3 class="card-title">Monthly Sales Chart</h3>
             </div>
             <div class="card-body">
-                <canvas id="barChart" width="400" height="200"></canvas>
+                <canvas id="barChart" height="285"></canvas>
             </div>
         </div>
     </div>

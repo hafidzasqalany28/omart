@@ -55,4 +55,66 @@ class ProductController extends Controller
 
         return view('products-detail', compact('product', 'promo', 'reviews', 'reviewCount', 'averageRating', 'relatedProducts'));
     }
+
+    public function create()
+    {
+        $categories = Category::all();
+        return view('create-product', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'quantity' => 'required|integer',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $product = new Product($request->except('image'));
+        $product->image = $this->storeImage($request);
+        $product->save();
+
+        return redirect()->route('admin.products.index');
+    }
+
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        return view('edit-product', compact('product', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'quantity' => 'required|integer',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->fill($request->except('image'));
+
+        if ($request->hasFile('image')) {
+            $product->image = $this->storeImage($request);
+        }
+
+        $product->save();
+
+        return redirect()->route('admin.products.index');
+    }
+
+    protected function storeImage(Request $request)
+    {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('images/products'), $imageName);
+        return $imageName;
+    }
 }
