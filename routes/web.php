@@ -4,15 +4,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController as ProductController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\ProductController as ProductController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,9 +71,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
             Route::delete('/{review}', [ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
             Route::delete('/{product}/destroyAll', [ReviewController::class, 'destroyAll'])->name('admin.reviews.destroyAll');
         });
-
         Route::resource('orders', OrderController::class, ['as' => 'admin']);
-        Route::resource('payments', PaymentController::class, ['as' => 'admin']);
+        // Route::resource('payments', PaymentController::class, ['as' => 'admin']);
     });
 });
 

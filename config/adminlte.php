@@ -315,11 +315,11 @@ return [
             'url' => 'admin/categories',
             'icon' => 'fas fa-fw fa-sitemap',
         ],
-        [
-            'text' => 'Manage Payments',
-            'url' => 'admin/payments',
-            'icon' => 'fas fa-credit-card',
-        ],
+        // [
+        //     'text' => 'Manage Payments',
+        //     'url' => 'admin/payments',
+        //     'icon' => 'fas fa-credit-card',
+        // ],
         [
             'text' => 'Manage Reviews',
             'url' => 'admin/reviews',
