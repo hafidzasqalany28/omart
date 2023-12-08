@@ -69,8 +69,8 @@
 
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="card">
+    <div class="col-md-6 d-flex">
+        <div class="card flex-fill">
             <div class="card-header">
                 <h3 class="card-title">Monthly Sales Chart</h3>
             </div>
@@ -80,8 +80,8 @@
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="card">
+    <div class="col-md-6 d-flex">
+        <div class="card flex-fill">
             <div class="card-header">
                 <h3 class="card-title">Latest Promos</h3>
             </div>
@@ -123,8 +123,8 @@
 
 <div class="row">
     @foreach(['Orders', 'Products', 'Categories', 'Reviews'] as $key)
-    <div class="col-md-6">
-        <div class="card">
+    <div class="col-md-6 d-flex">
+        <div class="card flex-fill">
             <div class="card-header border-0">
                 <h3 class="card-title">Latest {{ $key }}</h3>
                 <div class="card-tools">

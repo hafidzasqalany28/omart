@@ -32,6 +32,7 @@
 </div>
 <!-- Featured End -->
 
+{{--
 <!-- Offer Start -->
 <div class="container-fluid offer pt-5">
     <div class="row px-xl-5">
@@ -59,7 +60,7 @@
         </div>
     </div>
 </div>
-<!-- Offer End -->
+<!-- Offer End --> --}}
 
 <!-- Promo Products -->
 <div class="container-fluid pt-5">
