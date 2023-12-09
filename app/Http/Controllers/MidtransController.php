@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Midtrans\Snap;
+use App\Models\User;
 use Midtrans\Config;
 use App\Models\Order;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\OrderProcessingNotification;
 
 class MidtransController extends Controller
 {
@@ -78,7 +81,7 @@ class MidtransController extends Controller
         $order = $this->createOrder($cartItems, $totalAmount);
 
         $transactionDetails = [
-            'order_id' => 'jj-' . $order->id,
+            'order_id' => 'kk-' . $order->id,
             'gross_amount' => $totalAmount,
         ];
 
@@ -119,6 +122,7 @@ class MidtransController extends Controller
             if ($order) {
                 $order->status = 'processing';
                 $order->save();
+                $this->notifyAdminAboutProcessingOrder($order);
                 $cartItems = CartItem::where('user_id', $order->user_id)->with('product')->get();
                 $this->reduceProductStock($order->products, $cartItems);
                 $this->clearCart();
@@ -126,6 +130,15 @@ class MidtransController extends Controller
         }
 
         return response('OK', 200);
+    }
+
+    protected function notifyAdminAboutProcessingOrder($order)
+    {
+        $admin = User::where('role_id', 1)->first(); // Assuming the role_id for the admin is 1
+        if ($admin) {
+            // Send notification to admin
+            Notification::send($admin, new OrderProcessingNotification($order));
+        }
     }
 
     protected function reduceProductStock($products, $cartItems)
