@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
-    <title>EShopper - Bootstrap Shop Template</title>
+    <title>Omart - Supermarket Omart Merauke</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta content="Template HTML Gratis" name="keywords">
+    <meta content="Template HTML Gratis" name="description">
 
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.ico') }}" rel="icon">
@@ -19,10 +19,10 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
+    <!-- Stylesheet Pustaka -->
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
+    <!-- Stylesheet Bootstrap Kustom -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 
@@ -31,13 +31,14 @@
     @include('layouts.navbar')
 
     @unless(request()->is('/'))
-    <div class="container-fluid bg-secondary mb-5">
-        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">@yield('page-title', 'Page Title')</h1>
+    <div class="container-fluid mb-5"
+        style="background-image: url('{{ asset('img/bg-breadcumb.jpeg') }}'); background-size: cover; background-position: center;">
+        <div class="d-flex flex-column align-items-center justify-content-center text-light" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">@yield('page-title', 'Judul Halaman')</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="{{ route('home') }}">Home</a></p>
+                <p class="m-0"><a href="{{ route('home') }}" class="text-light">Beranda</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">@yield('breadcrumb', 'Page')</p>
+                <p class="m-0">@yield('breadcrumb', 'Halaman')</p>
             </div>
         </div>
     </div>
@@ -49,13 +50,13 @@
 
     @include('layouts.footer')
 
-    <!-- JavaScript Libraries -->
+    <!-- Pustaka Javascript -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
 
-    <!-- Contact Javascript File -->
+    <!-- Berkas Javascript Kontak -->
     <script src="{{ asset('mail/jqBootstrapValidation.min.js') }}"></script>
     <script src="{{ asset('mail/contact.js') }}"></script>
 

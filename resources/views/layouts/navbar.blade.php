@@ -1,13 +1,13 @@
 <div class="container-fluid">
-    <!-- Topbar Start -->
+    <!-- Baris Topbar Start -->
     <div class="row bg-secondary py-2 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center">
-                <a class="text-dark" href="#">FAQs</a>
+                <a class="text-dark" href="#">FAQ</a>
                 <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="#">Help</a>
+                <a class="text-dark" href="#">Bantuan</a>
                 <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="#">Support</a>
+                <a class="text-dark" href="#">Dukungan</a>
             </div>
         </div>
         <div class="col-lg-6 text-center text-lg-right">
@@ -32,19 +32,19 @@
     </div>
     <!-- Topbar End -->
 
-    <!-- Main Navbar Start -->
+    <!-- Navbar Utama Start -->
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="{{ route('home') }}" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold">
-                    <span class="text-primary font-weight-bold border px-3 mr-1">O</span>Mart
+                <h1 class="m-0 display-5 font-weight-semi-bold text-primary">
+                    <img src="{{ asset('img/logo-omart.png') }}" alt="Logo Omart" class="img-fluid logo-img">
                 </h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
             <form action="#">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" class="form-control" placeholder="Cari produk">
                     <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-    <!-- Main Navbar End -->
+    <!-- Navbar Utama End -->
 </div>
 
 <!-- Navbar Start -->
@@ -78,8 +78,8 @@
         <div class="col-lg-12">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="{{ route('home') }}" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold">
-                        <span class="text-primary font-weight-bold border px-3 mr-1">O</span>Mart
+                    <h1 class="m-0 display-5 font-weight-semi-bold text-primary">
+                        <img src="{{ asset('img/logo-omart.png') }}" alt="Logo Omart" class="img-fluid logo-img">
                     </h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -102,14 +102,14 @@
                     </div>
                     <div class="navbar-nav ml-auto">
                         @auth
-                        <!-- User Dropdown if logged in -->
+                        <!-- Dropdown Pengguna jika sudah login -->
                         <div class="dropdown mr-2">
                             <button class="btn border" type="button" id="userDropdown" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('profile') }}">Profile</a>
+                                <a class="dropdown-item" href="{{ route('profile') }}">Profil</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -123,7 +123,7 @@
                         </div>
                         @else
                         <a href="{{ route('login') }}" class="nav-item nav-link mr-2">Login</a>
-                        <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
+                        <a href="{{ route('register') }}" class="nav-item nav-link">Daftar</a>
                         @endauth
                     </div>
                 </div>
@@ -131,29 +131,19 @@
 
             @if(\Request::is('/'))
             <div id="header-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active" style="height: 410px;">
-                        <img class="img-fluid" src="{{ asset('img/carousel-1.jpg') }}" alt="Image">
-                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">Quality Products for Every
-                                    Need</h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Wide Variety at 10% Off</h3>
-                                <a href="{{ route('products') }}" class="btn btn-light py-2 px-3">Explore Now</a>
-                            </div>
-                        </div>
+                <div class="carousel-inner" style="position: relative; height: 0; padding-bottom: 56.25%;">
+                    <div class="carousel-item active"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <a href="{{ route('products') }}">
+                            <img class="img-fluid w-100 h-100" src="{{ asset('img/promo1.jpg') }}" alt="Gambar"
+                                style="object-fit: cover;">
+                        </a>
                     </div>
-                    <div class="carousel-item" style="height: 410px;">
-                        <img class="img-fluid" src="{{ asset('img/carousel-2.jpg') }}" alt="Image">
-                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">Affordable Prices Every
-                                    Day</h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Discover Reasonable Prices
-                                </h3>
-                                <a href="{{ route('products') }}" class="btn btn-light py-2 px-3">Shop Smart</a>
-                            </div>
-                        </div>
+                    <div class="carousel-item" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <a href="{{ route('products') }}">
+                            <img class="img-fluid w-100 h-100" src="{{ asset('img/promo2.jpg') }}" alt="Gambar"
+                                style="object-fit: cover;">
+                        </a>
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">

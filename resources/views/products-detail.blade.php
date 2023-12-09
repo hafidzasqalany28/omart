@@ -1,26 +1,26 @@
 @extends('layouts.layout')
-@section('page-title', 'Product Detail')
-@section('breadcrumb', 'Product Detail')
+@section('page-title', 'Detail Produk')
+@section('breadcrumb', 'Detail Produk')
 @section('content')
-<!-- Shop Detail Start -->
+<!-- Mulai Detail Produk -->
 <div class="container-fluid py-5">
     <div class="row px-xl-5 align-items-center">
-        <!-- Product Image and Information Column -->
+        <!-- Kolom Gambar dan Informasi Produk -->
         <div class="col-lg-5 pb-5">
             <div class="d-flex flex-column align-items-center">
                 @if($product->image)
-                <img class="w-75 h-auto mb-3" src="{{ asset('img/products/' . $product->image) }}" alt="Product Image">
+                <img class="w-75 h-auto mb-3" src="{{ asset('img/products/' . $product->image) }}" alt="Gambar Produk">
                 @endif
 
-                <!-- Add your dynamic product sharing here -->
+                <!-- Tambahkan bagian berbagi produk dinamis di sini -->
             </div>
         </div>
 
-        <!-- Product Information Column -->
+        <!-- Kolom Informasi Produk -->
         <div class="col-lg-7 pb-5">
             <h3 class="font-weight-semi-bold mb-3">{{ $product->name }}</h3>
 
-            <!-- Rating Section -->
+            <!-- Bagian Penilaian -->
             <div class="d-flex align-items-center mb-3">
                 <div class="text-primary mr-2">
                     @for($i = 0; $i < 5; $i++) @if($i < $averageRating) <small class="fas fa-star"></small>
@@ -29,14 +29,13 @@
                         @endif
                         @endfor
                 </div>
-                <small class="pt-1">({{ $reviewCount }} Reviews)</small>
+                <small class="pt-1">({{ $reviewCount }} Ulasan)</small>
             </div>
 
-
-            <!-- Price -->
+            <!-- Harga -->
             <div class="d-flex align-items-center mb-4">
                 @if($product->promos->isNotEmpty())
-                <!-- Display promotional price and discount badge if available -->
+                <!-- Tampilkan harga promosi dan lencana diskon jika tersedia -->
                 <h3 class="font-weight-semi-bold mb-0">
                     Rp {{ number_format($product->price - ($product->price * $product->promos[0]->discount_percentage /
                     100), 0, ',', '.') }}
@@ -46,7 +45,7 @@
                     -{{ $product->promos[0]->discount_percentage }}%
                 </span>
                 @else
-                <!-- Display regular price if no promo available -->
+                <!-- Tampilkan harga reguler jika tidak ada promosi -->
                 <h3 class="font-weight-semi-bold mb-0">
                     Rp {{ number_format($product->price, 0, ',', '.') }}
                 </h3>
@@ -57,10 +56,10 @@
                 @endif
             </div>
 
-            <!-- Description -->
+            <!-- Deskripsi -->
             <p class="mb-4">{{ $product->description }}</p>
 
-            <!-- Quantity and Add to Cart -->
+            <!-- Jumlah dan Tambahkan ke Keranjang -->
             <div class="d-flex align-items-center">
                 <div class="input-group quantity mr-3" style="width: 130px;">
                     <div class="input-group-btn">
@@ -78,30 +77,30 @@
                 </div>
                 <form action="{{ route('cart.add', ['id' => $product->id]) }}" method="POST">
                     @csrf
-                    <!-- Include the quantity input in the form with a name attribute -->
+                    <!-- Sertakan input tersembunyi untuk jumlah -->
                     <input type="hidden" name="quantity" id="addToCartQuantity" value="1">
                     <button type="submit" class="btn btn-primary px-3">
-                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                        <i class="fa fa-shopping-cart mr-1"></i> Tambahkan ke Keranjang
                     </button>
                 </form>
             </div>
-            <!-- Add your dynamic product sharing here -->
+            <!-- Tambahkan bagian berbagi produk dinamis di sini -->
         </div>
     </div>
     <div class="row px-xl-5">
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Deskripsi</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Promo</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews ({{ $reviewCount }})</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Ulasan ({{ $reviewCount }})</a>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
-                    <h4 class="mb-3">Product Description</h4>
+                    <h4 class="mb-3">Deskripsi Produk</h4>
                     @if($product->description)
                     <p>{{ $product->description }}</p>
                     @else
-                    <p>No description available for this product.</p>
+                    <p>Tidak ada deskripsi yang tersedia untuk produk ini.</p>
                     @endif
                 </div>
                 <div class="tab-pane fade" id="tab-pane-2">
@@ -112,25 +111,25 @@
                         <h5>{{ $promo->name }}</h5>
                         <p>{{ $promo->description }}</p>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Discount Percentage: <span class="badge badge-warning">{{
+                            <li class="list-group-item">Persentase Diskon: <span class="badge badge-warning">{{
                                     $promo->discount_percentage }}</span>%</li>
-                            <li class="list-group-item">Start Date: {{ $promo->start_date }}</li>
-                            <li class="list-group-item">End Date: {{ $promo->end_date }}</li>
+                            <li class="list-group-item">Tanggal Mulai: {{ $promo->start_date }}</li>
+                            <li class="list-group-item">Tanggal Berakhir: {{ $promo->end_date }}</li>
                         </ul>
                     </div>
                     @endforeach
                     @else
-                    <p>No promo available for this product.</p>
+                    <p>Tidak ada promo yang tersedia untuk produk ini.</p>
                     @endif
                 </div>
 
                 <div class="tab-pane fade" id="tab-pane-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="mb-4">{{ $reviewCount }} review(s) for "{{ $product->name }}"</h4>
+                            <h4 class="mb-4">{{ $reviewCount }} ulasan untuk "{{ $product->name }}"</h4>
                             @forelse($reviews as $review)
                             <div class="media mb-4">
-                                <img src="{{ asset('img/user.png') }}" alt="Image" class="img-fluid mr-3 mt-1"
+                                <img src="{{ asset('img/user.png') }}" alt="Gambar Pengguna" class="img-fluid mr-3 mt-1"
                                     style="width: 45px;">
                                 <div class="media-body">
                                     <h6>{{ $review->user->name }}<small> - <i>{{ $review->created_at->format('d M Y')
@@ -147,7 +146,7 @@
                                 </div>
                             </div>
                             @empty
-                            <p>No reviews available for this product.</p>
+                            <p>Tidak ada ulasan yang tersedia untuk produk ini.</p>
                             @endforelse
                         </div>
                     </div>
@@ -156,18 +155,18 @@
         </div>
     </div>
 </div>
-<!-- Shop Detail End -->
+<!-- Selesai Detail Produk -->
 
-<!-- Products Start -->
+<!-- Produk Terkait -->
 <div class="container-fluid py-5">
     <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
+        <h2 class="section-title px-5"><span class="px-2">Anda Mungkin Juga Menyukai</span></h2>
     </div>
     <div class="row px-xl-5">
         <div class="col">
             <div class="owl-carousel related-carousel">
                 @foreach ($relatedProducts as $index => $relatedProduct)
-                <div class="card product-item border-0" style="border-color: {{ $index % 2 === 0 ? 'red' : 'blue' }}">
+                <div class="card product-item border-0" style="border-color: {{ $index % 2 === 0 ? 'merah' : 'biru' }}">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                         <img class="img-fluid w-100" src="{{ asset('img/products/' . $relatedProduct->image) }}"
                             alt="{{ $relatedProduct->name }}">
@@ -176,7 +175,7 @@
                         <h6 class="text-truncate mb-3">{{ $relatedProduct->name }}</h6>
                         <div class="d-flex justify-content-center">
                             @if($relatedProduct->promos->isNotEmpty())
-                            <!-- Display promotional price and discount badge if available -->
+                            <!-- Tampilkan harga promosi dan lencana diskon jika tersedia -->
                             <h6>
                                 Rp {{ number_format($relatedProduct->price - ($relatedProduct->price *
                                 $relatedProduct->promos[0]->discount_percentage / 100), 0, ',', '.') }}
@@ -186,7 +185,7 @@
                             <span class="badge badge-warning ml-2">-{{ $relatedProduct->promos[0]->discount_percentage
                                 }}%</span>
                             @else
-                            <!-- Display regular price if no promo available -->
+                            <!-- Tampilkan harga reguler jika tidak ada promosi -->
                             <h6>Rp {{ number_format($relatedProduct->price, 0, ',', '.') }}</h6>
                             @if ($relatedProduct->previous_price)
                             <h6 class="text-muted ml-2"><del>Rp {{ number_format($relatedProduct->previous_price, 0,
@@ -198,12 +197,12 @@
                     <div class="card-footer d-flex justify-content-between bg-light border">
                         <a href="{{ route('products.detail', ['id' => $relatedProduct->id]) }}"
                             class="btn btn-sm text-dark p-0">
-                            <i class="fas fa-eye text-primary mr-1"></i>View Detail
+                            <i class="fas fa-eye text-primary mr-1"></i>Lihat Detail
                         </a>
                         <form action="{{ route('cart.add', ['id' => $relatedProduct->id]) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-sm text-dark p-0">
-                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Tambahkan ke Keranjang
                             </button>
                         </form>
                     </div>
@@ -213,7 +212,7 @@
         </div>
     </div>
 </div>
-<!-- Products End -->
+<!-- Selesai Produk Terkait -->
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -222,12 +221,12 @@
         var btnMinus = document.querySelector('.btn-minus');
         var btnPlus = document.querySelector('.btn-plus');
 
-        // Update the hidden input value and form when the quantity changes
+        // Perbarui nilai input tersembunyi dan formulir saat jumlah berubah
         quantityInput.addEventListener('input', function () {
             addToCartQuantity.value = this.value;
         });
 
-        // Add event listeners for the plus and minus buttons if available
+        // Tambahkan event listener untuk tombol plus dan minus jika tersedia
         if (btnMinus && btnPlus) {
             btnMinus.addEventListener('click', function () {
                 quantityInput.value = Math.max(parseInt(quantityInput.value, 10), 1);

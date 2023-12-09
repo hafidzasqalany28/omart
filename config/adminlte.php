@@ -291,6 +291,14 @@ return [
 
     'menu' => [
         [
+            'type' => 'notifications',
+            'topnav_right' => true,
+            'text' => '0', // You can set the initial count of notifications
+            'url' => '#', // Set the URL for the notifications page
+            'icon' => 'far fa-bell', // Use the bell icon for notifications
+        ],
+
+        [
             'text' => 'Dashboard',
             'url'  => 'admin/dashboard',
             'icon' => 'fas fa-fw fa-tachometer-alt',

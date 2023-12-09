@@ -179,7 +179,7 @@
                             <td>
                                 @if($item->status == 'completed')
                                 <span class="badge bg-success">{{ $item->status }}</span>
-                                @elseif($item->status == 'pending')
+                                @elseif($item->status == 'processing')
                                 <span class="badge bg-warning">{{ $item->status }}</span>
                                 @else
                                 <span class="badge bg-danger">{{ $item->status }}</span>

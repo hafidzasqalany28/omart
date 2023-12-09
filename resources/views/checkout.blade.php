@@ -3,16 +3,16 @@
 @section('page-title', 'Checkout')
 @section('breadcrumb', 'Checkout')
 @section('content')
-<!-- Checkout Start -->
+<!-- Proses Checkout Mulai -->
 <div class="container-fluid pt-5">
     <div class="row justify-content-center">
         <div class="col-lg-4">
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+                    <h4 class="font-weight-semi-bold m-0">Total Pesanan</h4>
                 </div>
                 <div class="card-body">
-                    <h5 class="font-weight-medium mb-3">Products</h5>
+                    <h5 class="font-weight-medium mb-3">Produk</h5>
                     @foreach($cartItems as $item)
                     <div class="d-flex justify-content-between">
                         <p>{{ $item->product->name }}</p>
@@ -25,7 +25,7 @@
                         <h6 class="font-weight-medium">Rp {{ number_format($subtotal, 0, ',', '.') }}</h6>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Shipping</h6>
+                        <h6 class="font-weight-medium">Ongkos Kirim</h6>
                         <h6 class="font-weight-medium">Rp {{ number_format($shipping, 0, ',', '.') }}</h6>
                     </div>
                 </div>
@@ -38,10 +38,10 @@
             </div>
 
             <a href="{{ route('checkout.pay', ['order_id' => uniqid(), 'gross_amount' => $total]) }}"
-                class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Pay</a>
+                class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Bayar</a>
 
         </div>
     </div>
 </div>
-<!-- Checkout End -->
+<!-- Proses Checkout Selesai -->
 @endsection

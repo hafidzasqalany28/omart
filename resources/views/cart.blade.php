@@ -1,20 +1,20 @@
 @extends('layouts.layout')
 
-@section('page-title', 'Shopping Cart')
-@section('breadcrumb', 'Shopping Cart')
+@section('page-title', 'Keranjang Belanja')
+@section('breadcrumb', 'Keranjang Belanja')
 @section('content')
-<!-- Cart Start -->
+<!-- Keranjang Belanja Mulai -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <div class="col-lg-8 table-responsive mb-5">
             <table class="table table-bordered text-center mb-0">
                 <thead class="bg-secondary text-dark">
                     <tr>
-                        <th>Products</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
                         <th>Total</th>
-                        <th>Remove</th>
+                        <th>Hapus</th>
                     </tr>
                 </thead>
                 <tbody class="align-middle">
@@ -66,7 +66,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center">No items in the cart.</td>
+                        <td colspan="5" class="text-center">Tidak ada barang di keranjang.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -75,15 +75,15 @@
         <div class="col-lg-4">
             {{-- <form class="mb-5" action="">
                 <div class="input-group">
-                    <input type="text" class="form-control p-4" placeholder="Coupon Code">
+                    <input type="text" class="form-control p-4" placeholder="Kode Kupon">
                     <div class="input-group-append">
-                        <button class="btn btn-primary">Apply Coupon</button>
+                        <button class="btn btn-primary">Terapkan Kupon</button>
                     </div>
                 </div>
             </form> --}}
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    <h4 class="font-weight-semi-bold m-0">Ringkasan Keranjang</h4>
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3 pt-1">
@@ -91,7 +91,7 @@
                         <h6 class="font-weight-medium">Rp {{ number_format($subtotal, 0, ',', '.') }}</h6>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Ongkir</h6>
+                        <h6 class="font-weight-medium">Ongkos Kirim</h6>
                         <h6 class="font-weight-medium">Rp {{ number_format($shipping, 0, ',', '.') }}</h6>
                     </div>
                 </div>
@@ -100,12 +100,12 @@
                         <h5 class="font-weight-bold">Total</h5>
                         <h5 class="font-weight-bold">Rp {{ number_format($total, 0, ',', '.') }}</h5>
                     </div>
-                    <a href="{{ route('checkout') }}" class="btn btn-block btn-primary my-3 py-3">Proceed To
-                        Checkout</a>
+                    <a href="{{ route('checkout') }}" class="btn btn-block btn-primary my-3 py-3">Lanjutkan
+                        ke Pembayaran</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Cart End -->
+<!-- Keranjang Belanja Selesai -->
 @endsection

@@ -1,80 +1,79 @@
 @extends('layouts.layout')
-@section('page-title', 'Order History')
-@section('breadcrumb', 'Order History')
+@section('page-title', 'Histori Pesanan')
+@section('breadcrumb', 'Histori Pesanan')
 @section('content')
 <!-- Sorting Dropdown Start -->
 <div class="container mb-4">
     <div class="dropdown ml-auto float-right">
         <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Sort by
+            Urutkan berdasarkan
         </button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-            <a class="dropdown-item" href="{{ route('order.history', ['sort' => 'desc']) }}">Latest</a>
-            <a class="dropdown-item" href="{{ route('order.history', ['sort' => 'asc']) }}">Oldest</a>
+            <a class="dropdown-item" href="{{ route('order.history', ['sort' => 'desc']) }}">Terbaru</a>
+            <a class="dropdown-item" href="{{ route('order.history', ['sort' => 'asc']) }}">Terlama</a>
         </div>
     </div>
 </div>
 <!-- Sorting Dropdown End -->
 
 
-<!-- Page order history start -->
+<!-- Halaman histori pesanan start -->
 <div class="container-fluid pt-5">
     <div class="row mt-3">
         @forelse($orderHistory as $order)
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Order ID: {{ $order->id }}</h5>
+                    <h5 class="mb-0">ID Pesanan: {{ $order->id }}</h5>
                 </div>
                 <div class="card-body">
                     <p class="mb-2"><strong>Total:</strong> Rp {{ number_format($order->total_amount + 20000, 0, ',',
                         '.') }}</p>
                     <p class="mb-2"><strong>Status:</strong> {{ $order->status }}</p>
-                    <p class="mb-2"><strong>Quantity:</strong> {{ $order->quantity }}</p>
-                    <p class="mb-2"><strong>Order Date:</strong> {{ $order->created_at->format('Y-m-d H:i:s') }}</p>
+                    <p class="mb-2"><strong>Jumlah:</strong> {{ $order->quantity }}</p>
+                    <p class="mb-2"><strong>Tanggal Pesan:</strong> {{ $order->created_at->format('Y-m-d H:i:s') }}</p>
                     <hr>
-                    <h5>Ordered Products:</h5>
+                    <h5>Produk Dipesan:</h5>
                     <ul class="list-group">
                         @php $totalProductsPrice = 0; @endphp
                         @forelse($order->products as $product)
                         <li class="list-group-item">
-                            <p class="mb-1"><strong>Name:</strong> {{ $product->name }}</p>
-                            <p class="mb-1"><strong>Price:</strong> Rp {{ number_format($product->pivot->price, 0, ',',
+                            <p class="mb-1"><strong>Nama:</strong> {{ $product->name }}</p>
+                            <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($product->pivot->price, 0, ',',
                                 '.') }}</p>
-                            <p class="mb-1"><strong>Quantity:</strong> {{ $product->pivot->quantity }}</p>
+                            <p class="mb-1"><strong>Jumlah:</strong> {{ $product->pivot->quantity }}</p>
                             @php
                             $subtotal = $product->pivot->price * $product->pivot->quantity;
                             $totalProductsPrice += $subtotal;
                             @endphp
 
-                            <!-- Add the following lines to show review modal trigger only when status is completed -->
+                            <!-- Tambahkan baris berikut untuk menampilkan modal ulasan hanya saat status selesai -->
                             @if($order->status === 'completed')
                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#reviewModal{{ $product->id }}">
-                                Write a Review
+                                Tulis Ulasan
                             </button>
 
-                            <!-- Add the following lines to include the review modal -->
+                            <!-- Tambahkan baris berikut untuk menyertakan modal ulasan -->
                             @include('layouts.review-modal', ['product' => $product, 'order' => $order])
                             @endif
                         </li>
                         @empty
-                        <li class="list-group-item text-muted">No products in this order.</li>
+                        <li class="list-group-item text-muted">Tidak ada produk dalam pesanan ini.</li>
                         @endforelse
                     </ul>
                     <hr>
-                    <p class="mb-1"><strong>Ongkir:</strong> Rp 20,000</p>
-
+                    <p class="mb-1"><strong>Ongkos Kirim:</strong> Rp 20,000</p>
                 </div>
             </div>
         </div>
         @empty
         <div class="col-12">
-            <p>No order history available.</p>
+            <p>Tidak ada histori pesanan yang tersedia.</p>
         </div>
         @endforelse
     </div>
 </div>
-<!-- Page order history end -->
+<!-- Halaman histori pesanan end -->
 @endsection
