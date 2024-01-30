@@ -64,7 +64,7 @@
                 @endauth
                 <a href="{{ route('cart') }}" class="nav-item nav-link{{ request()->is('cart') ? ' active' : '' }}">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">{{ \App\Models\CartItem::where('user_id', auth()->id())->count() }}</span>
+                    <span class="badge text-primary">{{ \App\Models\CartItem::where('user_id', auth()->id())->count() }}</span>
                 </a>
             </div>
         </div>
@@ -77,11 +77,13 @@
     <div class="row border-top px-xl-5">
         <div class="col-lg-12">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="{{ route('home') }}" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold text-primary">
-                        <img src="{{ asset('img/logo-omart.png') }}" alt="Logo Omart" class="img-fluid logo-img">
-                    </h1>
-                </a>
+              <a href="{{ route('home') }}" class="text-decoration-none d-block d-lg-none">
+    <h1 class="m-0 display-5 font-weight-semi-bold text-primary">
+        <img src="{{ asset('img/logo-omart.png') }}" alt="Logo Omart" class="img-fluid logo-img" style="max-width: 200px; max-height: 80px; width: auto; height: auto;">
+    </h1>
+</a>
+
+
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>

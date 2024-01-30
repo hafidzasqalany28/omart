@@ -253,7 +253,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => '/',
+    'dashboard_url' =>'',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -290,13 +290,13 @@ return [
     */
 
     'menu' => [
-        [
-            'type' => 'notifications',
-            'topnav_right' => true,
-            'text' => '0', // You can set the initial count of notifications
-            'url' => '#', // Set the URL for the notifications page
-            'icon' => 'far fa-bell', // Use the bell icon for notifications
-        ],
+        // [
+        //     'type' => 'notifications',
+        //     'topnav_right' => true,
+        //     'text' => '0', // You can set the initial count of notifications
+        //     'url' => '#', // Set the URL for the notifications page
+        //     'icon' => 'far fa-bell', // Use the bell icon for notifications
+        // ],
 
         [
             'text' => 'Dashboard',

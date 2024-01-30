@@ -36,7 +36,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('img/products'), $imageName);
+            $image->move(('img/products'), $imageName);
             $data['image'] = $imageName;
         }
 
@@ -66,7 +66,7 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('img/products'), $imageName);
+            $image->move(('img/products'), $imageName);
             $data['image'] = $imageName;
         }
 
@@ -83,7 +83,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->image) {
-            $imagePath = public_path('img/products/' . $product->image);
+            $imagePath = ('img/products/' . $product->image);
 
             if (file_exists($imagePath)) {
                 unlink($imagePath);

@@ -38,7 +38,7 @@
                                             class="btn btn-info btn-sm">Show Details</a>
                                     </div>
 
-                                    @if($order->status !== 'completed')
+                                    @if($order->status == 'processing')
                                     <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')

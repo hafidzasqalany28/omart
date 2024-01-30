@@ -51,7 +51,7 @@
                 <label for="image">Product Image:</label>
                 <input type="file" name="image" id="image" class="form-control-file">
                 @if($product->image)
-                <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->name }}"
+                <img src="{{ asset('img/products/' . $product->image) }}" alt="{{ $product->name }}"
                     class="img-thumbnail" style="max-width: 100px; margin-top: 10px;">
                 @else
                 No Image
